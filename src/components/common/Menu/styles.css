@@ -1,0 +1,7 @@
+.MainMenu {
+  min-height: 572px;
+  gap: 59px;
+  padding: 0;
+  position: relative;
+  align-items: flex-start;
+}
