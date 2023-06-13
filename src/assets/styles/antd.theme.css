@@ -1,0 +1,11 @@
+/* Import Montserrat font */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+/* Apply Montserrat font to Ant Design */
+body,
+.ant-typography {
+  font-family: 'Montserrat', sans-serif !important;
+}
+.ant-menu {
+  font-family: 'Montserrat', sans-serif !important;
+}
