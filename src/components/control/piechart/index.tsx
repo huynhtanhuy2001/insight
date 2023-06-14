@@ -1,20 +1,30 @@
 import React from "react";
-import { Pie } from "react-chartjs-2";
+import { Doughnut } from "react-chartjs-2";
 
-const PieChart = () => {
-  // Dữ liệu biểu đồ
-  const data = {
-    datasets: [
-      {
-        data: [300, 50],
-        backgroundColor: ["blue", "orange"],
+interface PieChartProps {
+  data: any;
+  label: string;
+}
+
+const PieChart: React.FC<PieChartProps> = ({ data, label }) => {
+  const options = {
+    plugins: {
+      legend: {
+        display: false,
       },
-    ],
+    },
+    elements: {
+      arc: {
+        borderWidth: 0,
+      },
+    },
+    cutout: "80%",
   };
 
   return (
-    <div style={{ width: "246px", height: "246px" }}>
-      <Pie data={data} />
+    <div style={{ width: "246px", height: "246px", textAlign: "center" }}>
+      <label>{label}</label>
+      <Doughnut data={data} options={options} />
     </div>
   );
 };
