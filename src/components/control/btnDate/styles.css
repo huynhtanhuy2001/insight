@@ -1,0 +1,28 @@
+.custom-icon {
+  color: orange;
+}
+.date-picker-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.date-picker-radio-group {
+  position: absolute;
+  top: 40px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  width: 100%;
+}
+.date-picker-radio-group .radio-group {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px 0px 16px 32px;
+}
+:where(.css-dev-only-do-not-override-12jzuas).ant-picker-dropdown
+  .ant-picker-date-panel
+  .ant-picker-body {
+  margin-top: 30px;
+  padding: 8px 18px;
+}

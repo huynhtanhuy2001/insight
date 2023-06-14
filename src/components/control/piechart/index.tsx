@@ -13,12 +13,16 @@ const PieChart: React.FC<PieChartProps> = ({ data, label }) => {
         display: false,
       },
     },
+    layout: {
+      padding: 30,
+    },
     elements: {
+    
       arc: {
         borderWidth: 0,
       },
     },
-    cutout: "80%",
+    cutout: "50%",
   };
 
   return (

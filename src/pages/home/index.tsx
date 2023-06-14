@@ -5,6 +5,7 @@ import AccNotiMail from "../../components/control/header/Accnotimail/AccNotiMail
 import { Button, Tag } from "antd";
 import LineChart from "../../components/control/linechart";
 import PieChart from "../../components/control/piechart";
+import BtnDatePicker from "../../components/control/btnDate";
 const HomePage = () => {
   // Dữ liệu biểu đồ 1
   const data1 = {
@@ -33,7 +34,6 @@ const HomePage = () => {
           style={{
             display: "flex",
             justifyContent: "space-between",
-          
           }}
         >
           <SearchComponent />
@@ -55,7 +55,7 @@ const HomePage = () => {
             }}
           >
             <h4>Doanh thu</h4>
-            <Button>Ngày</Button>
+            <BtnDatePicker />
           </div>
           <div className="horizontalchart">
             <LineChart />
@@ -69,7 +69,7 @@ const HomePage = () => {
               justifyContent: "space-between",
             }}
           >
-            <Button>tháng</Button>
+            <BtnDatePicker />
             <PieChart data={data1} label="Gói gia đình" />
             <PieChart data={data2} label="Gói doanh nghiệp" />
             <div>

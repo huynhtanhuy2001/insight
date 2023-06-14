@@ -1,16 +1,13 @@
 import React, { useState } from "react";
 import { Menu } from "antd";
-import {
-  SettingOutlined,
-  HomeOutlined,
-  BarsOutlined,
-} from "@ant-design/icons";
+import { SettingOutlined, HomeOutlined, BarsOutlined } from "@ant-design/icons";
 import Logo from "../../../assets/image/logo.svg";
 
 import "./styles.css";
 import SvgVector from "../../../assets/icon/Vector";
 import SvgDoisoatve from "../../../assets/icon/Doisoatve";
 import SvgQuanlythietbi from "../../../assets/icon/Quanlythietbi";
+import { Link } from "react-router-dom";
 
 const { SubMenu } = Menu;
 const SiderMenu = () => {
@@ -32,7 +29,7 @@ const SiderMenu = () => {
           onClick={handleMenuClick}
         >
           <Menu.Item key="1" icon={<HomeOutlined />}>
-            Trang chủ
+            <Link to="/home"> Trang chủ</Link>
           </Menu.Item>
           <Menu.Item key="2" icon={<SvgVector />}>
             Quản lý vé
