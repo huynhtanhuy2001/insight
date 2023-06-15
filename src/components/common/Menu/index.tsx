@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Menu } from "antd";
 import { SettingOutlined, HomeOutlined, BarsOutlined } from "@ant-design/icons";
 import Logo from "../../../assets/image/logo.svg";
@@ -7,33 +7,40 @@ import "./styles.css";
 import SvgVector from "../../../assets/icon/Vector";
 import SvgDoisoatve from "../../../assets/icon/Doisoatve";
 import SvgQuanlythietbi from "../../../assets/icon/Quanlythietbi";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const { SubMenu } = Menu;
-const SiderMenu = () => {
-  const [isClicked, setIsClicked] = useState(false);
-  const [selectedKeys, setSelectedKeys] = useState<string[]>([]);
+const SiderMenu = ({ selectedKey }: { selectedKey: string }) => {
+  const [selectedKeys, setSelectedKeys] = useState<string[]>([selectedKey]);
+  const navigate = useNavigate();
+  useEffect(() => {
+    setSelectedKeys([selectedKey]);
+  }, [selectedKey]);
   const handleMenuClick = (e: any) => {
+    const key = e.key;
+    if (key === "1") {
+      navigate("/home");
+    } else if (key === "2") {
+      navigate("/ticketmanagement");
+    }
     setSelectedKeys([e.key]);
-    setIsClicked(!isClicked);
   };
   return (
     <div className="MainMenu">
       <img src={Logo} alt="Logo" />
       <div style={{ width: 252, marginTop: "59px" }}>
         <Menu
-          defaultSelectedKeys={["1"]}
-          defaultOpenKeys={["sub1"]}
           mode="inline"
           selectedKeys={selectedKeys}
           onClick={handleMenuClick}
         >
           <Menu.Item key="1" icon={<HomeOutlined />}>
-            <Link to="/home"> Trang chủ</Link>
+            Trang chủ
           </Menu.Item>
           <Menu.Item key="2" icon={<SvgVector />}>
             Quản lý vé
           </Menu.Item>
+
           <Menu.Item key="3" icon={<SvgDoisoatve />}>
             Đối soát vé
           </Menu.Item>

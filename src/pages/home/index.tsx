@@ -2,11 +2,14 @@ import React from "react";
 import SiderMenu from "../../components/common/Menu";
 import SearchComponent from "../../components/control/search/search";
 import AccNotiMail from "../../components/control/header/Accnotimail/AccNotiMail";
-import { Button, Tag } from "antd";
+import {  Tag } from "antd";
 import LineChart from "../../components/control/linechart";
 import PieChart from "../../components/control/piechart";
 import BtnDatePicker from "../../components/control/btnDate";
+
 const HomePage = () => {
+
+
   // Dữ liệu biểu đồ 1
   const data1 = {
     datasets: [
@@ -26,9 +29,11 @@ const HomePage = () => {
       },
     ],
   };
+
+
   return (
     <div className="MainApp">
-      <SiderMenu />
+      <SiderMenu selectedKey={"1"} />
       <div style={{ width: "100%" }}>
         <div
           style={{

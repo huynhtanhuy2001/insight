@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import dayjs from "dayjs";
+import "dayjs/locale/vi";
 import vi from "antd/es/date-picker/locale/vi_VN";
 import { DatePicker, Space, Radio } from "antd";
 import type { DatePickerProps, RadioChangeEvent } from "antd";
@@ -17,6 +18,16 @@ const BtnDatePicker: React.FC = () => {
     setPickerType(e.target.value);
   };
 
+  useEffect(() => {
+    const defaultDateElement = document.querySelector(
+      ".ant-picker-cell-inner"
+    ) as HTMLElement;
+
+    if (defaultDateElement) {
+      defaultDateElement.style.backgroundColor = "orange";
+      defaultDateElement.style.color = "white";
+    }
+  }, []);
   const renderExtraFooter = () => (
     <div className="date-picker-radio-group">
       <Radio.Group

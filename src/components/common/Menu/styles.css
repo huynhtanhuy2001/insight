@@ -6,38 +6,3 @@
   align-items: flex-start;
 }
 
-.ant-menu-inline.ant-menu-root .ant-menu-item-selected,
-.ant-menu-inline.ant-menu-root .ant-menu-submenu-title::after {
-  background-color: orange;
-  color: white;
-}
-:where(.css-dev-only-do-not-override-12jzuas).ant-menu-light
-  .ant-menu-submenu-selected
-  > .ant-menu-submenu-title,
-:where(.css-dev-only-do-not-override-12jzuas).ant-menu-light
-  > .ant-menu
-  .ant-menu-submenu-selected
-  > .ant-menu-submenu-title {
-  background-color: orange;
-  color: white;
-}
-:where(
-    .css-dev-only-do-not-override-12jzuas
-  ).ant-menu-light.ant-menu-root.ant-menu-inline,
-:where(.css-dev-only-do-not-override-12jzuas).ant-menu-light
-  > .ant-menu.ant-menu-root.ant-menu-inline,
-:where(
-    .css-dev-only-do-not-override-12jzuas
-  ).ant-menu-light.ant-menu-root.ant-menu-vertical,
-:where(.css-dev-only-do-not-override-12jzuas).ant-menu-light
-  > .ant-menu.ant-menu-root.ant-menu-vertical {
-  background-color: #e5e5e5;
-  border: none;
-}
-.ant-menu-item.active-menu-item {
-  background-color: #6e645e;
-}
-.ant-menu-item.active-menu-item svg path {
-  fill: white;
-}
-

@@ -5,3 +5,40 @@
   padding: 17px 32px 0 0;
 }
 
+:where(.css-dev-only-do-not-override-12jzuas).ant-menu-light
+  .ant-menu-submenu-selected
+  > .ant-menu-submenu-title,
+:where(.css-dev-only-do-not-override-12jzuas).ant-menu-light
+  > .ant-menu
+  .ant-menu-submenu-selected
+  > .ant-menu-submenu-title {
+  background-color: orange;
+  color: white;
+}
+:where(
+    .css-dev-only-do-not-override-12jzuas
+  ).ant-menu-light.ant-menu-root.ant-menu-inline,
+:where(.css-dev-only-do-not-override-12jzuas).ant-menu-light
+  > .ant-menu.ant-menu-root.ant-menu-inline,
+:where(
+    .css-dev-only-do-not-override-12jzuas
+  ).ant-menu-light.ant-menu-root.ant-menu-vertical,
+:where(.css-dev-only-do-not-override-12jzuas).ant-menu-light
+  > .ant-menu.ant-menu-root.ant-menu-vertical {
+  background-color: #e5e5e5;
+  border: none;
+}
+.ant-menu-item.active-menu-item {
+  background-color: #e5d5cb;
+}
+.ant-menu-item.active-menu-item svg path {
+  fill: white;
+}
+:where(.css-dev-only-do-not-override-12jzuas).ant-menu-light
+  .ant-menu-item-selected,
+:where(.css-dev-only-do-not-override-12jzuas).ant-menu-light
+  > .ant-menu
+  .ant-menu-item-selected {
+  background-color: orange;
+  color: white !important;
+}
