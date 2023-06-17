@@ -4,13 +4,20 @@ import SearchComponent from "../../components/control/search/search";
 import AccNotiMail from "../../components/control/header/Accnotimail/AccNotiMail";
 import { Button, Input, Table } from "antd";
 import { SearchOutlined, FilterOutlined } from "@ant-design/icons";
-import TicketModel from "../../model/TicketModel";
+import Popup from "../../components/control/btnLocVe";
+
 interface DataType {
   key: React.Key;
-  name: string;
-  age: number;
-  address: string;
+  stt: number;
+  bookingCode: string;
+  soVe: string;
+  tenSuKien: string;
+  tinhTrangSuDung: string;
+  ngaySuDung: string;
+  ngayXuatVe: string;
+  congCheckIn: string;
 }
+
 const columns = [
   {
     title: "STT",
@@ -69,9 +76,18 @@ const data = [
 ];
 
 const TicketManagementPage = () => {
-  
+  const [popupVisible, setPopupVisible] = useState(false);
+
+  const showPopup = () => {
+    setPopupVisible(true);
+  };
+
+  const closePopup = () => {
+    setPopupVisible(false);
+  };
+
   const paginationConfig = {
-    pageSize: 12, // Số dòng dữ liệu hiển thị trên mỗi trang
+    pageSize: 12,
   };
   return (
     <div className="MainApp">
@@ -102,10 +118,11 @@ const TicketManagementPage = () => {
               enterButton={<SearchOutlined />}
             ></Input.Search>
             <div>
-              <Button>
+              <Button onClick={showPopup}>
                 <FilterOutlined />
                 Lọc vé
               </Button>
+              <Popup visible={popupVisible} onClose={closePopup} />
               <Button>Xuất file</Button>
             </div>
           </div>
