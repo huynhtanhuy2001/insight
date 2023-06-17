@@ -64,7 +64,18 @@ const SiderMenu = ({ selectedKey }: { selectedKey: string }) => {
           </SubMenu>
         </Menu>
       </div>
-      <p style={{ position: "absolute", bottom: "0" }}>
+      <p
+        style={{
+          position: "absolute",
+          bottom: "0",
+          fontSize: "14px",
+          lineHeight: "22px",
+          fontWeight: "400",
+          fontStyle: "normal",
+          marginTop: "auto",
+          marginBottom: "0px",
+        }}
+      >
         Copyright &copy; 2020 Alta Software{" "}
       </p>
     </div>

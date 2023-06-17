@@ -1,8 +1,7 @@
 .MainApp {
   display: flex;
   background-color: #e5e5e5;
-  height: 100%;
-  padding: 17px 32px 0 0;
+  padding: 17px 32px 32px 0;
 }
 
 :where(.css-dev-only-do-not-override-12jzuas).ant-menu-light
@@ -41,4 +40,8 @@
   .ant-menu-item-selected {
   background-color: orange;
   color: white !important;
+}
+:where(.css-dev-only-do-not-override-12jzuas).ant-table-wrapper
+  .ant-table-pagination-right {
+  justify-content: center;
 }
