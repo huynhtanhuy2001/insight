@@ -14,37 +14,50 @@
     "@types/react-dom": "^18.0.0",
     "antd": "^5.6.1",
     "assert": "^2.0.0",
+    "axios": "^1.4.0",
+    "browserify-zlib": "^0.2.0",
     "chart.js": "^3.5.1",
+    "class-validator": "^0.14.0",
     "crypto-browserify": "^3.12.0",
     "dotenv": "^16.3.0",
     "firebase": "^9.22.2",
     "ibm_db": "^3.2.1",
-    "moment": "2.29.1",
+    "moment": "^2.29.4",
     "mysql": "^2.18.1",
     "mysql2": "^3.3.5",
+    "net-browserify": "^0.1.4",
     "path-browserify": "^1.0.1",
     "pg-connection-string": "^2.6.0",
     "pg-hstore": "^2.3.4",
+    "process": "^0.11.10",
     "react": "^18.2.0",
     "react-chartjs-2": "^3.0.4",
     "react-dom": "^18.2.0",
     "react-redux": "^8.0.7",
     "react-router-dom": "^6.12.1",
-    "react-scripts": "5.0.1",
+    "react-scripts": "latest",
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.32.1",
     "sequelize-cli": "^6.6.1",
+    "stream-browserify": "^3.0.0",
+    "timers-browserify": "^2.0.12",
+    "tls-browserify": "^0.2.2",
     "typeorm": "^0.3.16",
-    "typescript": "^4.4.2",
+    "typescript": "^5.1.3",
     "url": "^0.11.1",
     "util": "^0.12.5",
-    "web-vitals": "^2.1.0"
+    "web-vitals": "^2.1.0",
+    "webpack-cli": "^5.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "sequelize": "sequelize",
+    "migrate": "NODE_ENV=development ts-node ./node_modules/.bin/sequelize db:migrate",
+    "migrate:undo": "NODE_ENV=development ts-node ./node_modules/.bin/sequelize db:migrate:undo"
+  
   },
   "eslintConfig": {
     "extends": [
@@ -66,6 +79,8 @@
   },
   "devDependencies": {
     "@types/chart.js": "^2.9.37",
+    "node-polyfill-webpack-plugin": "^2.0.1",
+    "webpack": "^5.87.0",
     "webpack-dev-server": "^4.15.1"
   },
   "sequelize-cli": {

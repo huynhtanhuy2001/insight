@@ -5,65 +5,63 @@ import AccNotiMail from "../../components/control/header/Accnotimail/AccNotiMail
 import { Button, Input, Table } from "antd";
 import { SearchOutlined, FilterOutlined } from "@ant-design/icons";
 import Popup from "../../components/control/btnLocVe";
-
+import axios from "axios";
 interface DataType {
-  key: React.Key;
-  stt: number;
-  bookingCode: string;
-  soVe: string;
-  tenSuKien: string;
-  tinhTrangSuDung: string;
-  ngaySuDung: string;
-  ngayXuatVe: string;
-  congCheckIn: string;
+  idTicket: number;
+  BookingCode: string;
+  SoVe: string;
+  TenSuKien: string;
+  TinhTrangSuDung: string;
+  NgaySuDung: string;
+  NgayXuatVe: string;
+  CongCheckIn: string;
 }
 
 const columns = [
   {
     title: "STT",
-    dataIndex: "stt",
-    key: "stt",
+    dataIndex: "idTicket",
+    key: "idTicket",
   },
   {
     title: "Booking code",
-    dataIndex: "bookingCode",
-    key: "bookingCode",
+    dataIndex: "BookingCode",
+    key: "BookingCode",
   },
   {
     title: "Số vé",
-    dataIndex: "soVe",
-    key: "soVe",
+    dataIndex: "SoVe",
+    key: "SoVe",
   },
   {
     title: "Tên sự kiện",
-    dataIndex: "tenSuKien",
-    key: "tenSuKien",
+    dataIndex: "TenSuKien",
+    key: "TenSuKien",
   },
   {
     title: "Tình trạng sử dụng",
-    dataIndex: "tinhTrangSuDung",
-    key: "tinhTrangSuDung",
+    dataIndex: "TinhTrangSuDung",
+    key: "TinhTrangSuDung",
   },
   {
     title: "Ngày Sử dụng",
-    dataIndex: "ngaySuDung",
-    key: "ngaySuDung",
+    dataIndex: "NgaySuDung",
+    key: "NgaySuDung",
   },
   {
     title: "Ngày xuất vé",
-    dataIndex: "ngayXuatVe",
-    key: "ngayXuatVe",
+    dataIndex: "NgayXuatVe",
+    key: "NgayXuatVe",
   },
   {
     title: "Cổng check in",
-    dataIndex: "congCheckIn",
-    key: "congCheckIn",
+    dataIndex: "CongCheckIn",
+    key: "CongCheckIn",
   },
 ];
 
 const data = [
   {
-    key: "1",
     stt: 1,
     bookingCode: "BK001",
     soVe: "VE001",
@@ -77,6 +75,24 @@ const data = [
 
 const TicketManagementPage = () => {
   const [popupVisible, setPopupVisible] = useState(false);
+
+  const [tickets, setTickets] = useState([]);
+
+  useEffect(() => {
+    // Gọi API bằng Axios và lấy dữ liệu
+    axios
+      .get("http://localhost:8000/api/ticket")
+      .then(response => {
+        // Xử lý dữ liệu nhận được từ API
+        const responseData = response.data;
+        // Cập nhật state tickets với dữ liệu từ API
+        setTickets(responseData);
+      })
+      .catch(error => {
+        // Xử lý lỗi nếu có
+        console.log(error);
+      });
+  }, []);
 
   const showPopup = () => {
     setPopupVisible(true);
@@ -129,8 +145,8 @@ const TicketManagementPage = () => {
           <div className="table">
             <Table
               columns={columns}
-              // dataSource={tickets}
-              dataSource={data}
+              dataSource={tickets}
+              // dataSource={data}
               pagination={paginationConfig}
             />
           </div>
