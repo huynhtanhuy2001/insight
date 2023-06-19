@@ -6,6 +6,7 @@ import { Button, Input, Table } from "antd";
 import { SearchOutlined, FilterOutlined } from "@ant-design/icons";
 import Popup from "../../components/control/btnLocVe";
 import axios from "axios";
+import Ticket from '../../models/Ticket';
 interface DataType {
   idTicket: number;
   BookingCode: string;
@@ -60,39 +61,34 @@ const columns = [
   },
 ];
 
-const data = [
-  {
-    stt: 1,
-    bookingCode: "BK001",
-    soVe: "VE001",
-    tenSuKien: "Sự kiện 1",
-    tinhTrangSuDung: "Đã sử dụng",
-    ngaySuDung: "01/01/2023",
-    ngayXuatVe: "01/12/2022",
-    congCheckIn: "Cổng A",
-  },
-];
-
 const TicketManagementPage = () => {
   const [popupVisible, setPopupVisible] = useState(false);
 
-  const [tickets, setTickets] = useState([]);
-
+  const [tickets, setTickets] = useState<DataType[]>([]);
   useEffect(() => {
-    // Gọi API bằng Axios và lấy dữ liệu
-    axios
-      .get("http://localhost:8000/api/ticket")
-      .then(response => {
-        // Xử lý dữ liệu nhận được từ API
-        const responseData = response.data;
-        // Cập nhật state tickets với dữ liệu từ API
+    Ticket.getAllTickets()
+      .then(responseData => {
         setTickets(responseData);
       })
       .catch(error => {
-        // Xử lý lỗi nếu có
         console.log(error);
       });
   }, []);
+  // useEffect(() => {
+  //   // Gọi API bằng Axios và lấy dữ liệu
+  //   axios
+  //     .get("http://localhost:8000/api/ticket")
+  //     .then(response => {
+  //       // Xử lý dữ liệu nhận được từ API
+  //       const responseData = response.data;
+  //       // Cập nhật state tickets với dữ liệu từ API
+  //       setTickets(responseData);
+  //     })
+  //     .catch(error => {
+  //       // Xử lý lỗi nếu có
+  //       console.log(error);
+  //     });
+  // }, []);
 
   const showPopup = () => {
     setPopupVisible(true);
@@ -146,7 +142,6 @@ const TicketManagementPage = () => {
             <Table
               columns={columns}
               dataSource={tickets}
-              // dataSource={data}
               pagination={paginationConfig}
             />
           </div>

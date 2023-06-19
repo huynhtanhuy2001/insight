@@ -63,7 +63,7 @@ const HomePage = () => {
             <BtnDatePicker />
           </div>
           <div className="horizontalchart">
-            <LineChart />
+            <LineChart  />
             <p>Tổng doanh thu theo tuần</p>
             <h3>5000000</h3>
           </div>
@@ -100,6 +100,7 @@ const HomePage = () => {
                     }}
                   />
                   <p>Vé chưa sử dụng</p>
+                  
                 </div>
               </div>
             </div>

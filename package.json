@@ -17,6 +17,7 @@
     "axios": "^1.4.0",
     "browserify-zlib": "^0.2.0",
     "chart.js": "^3.5.1",
+    "chartjs-plugin-annotation": "^3.0.1",
     "class-validator": "^0.14.0",
     "crypto-browserify": "^3.12.0",
     "dotenv": "^16.3.0",
@@ -24,7 +25,7 @@
     "ibm_db": "^3.2.1",
     "moment": "^2.29.4",
     "mysql": "^2.18.1",
-    "mysql2": "^3.3.5",
+    "mysql2": "^3.4.0",
     "net-browserify": "^0.1.4",
     "path-browserify": "^1.0.1",
     "pg-connection-string": "^2.6.0",
@@ -39,6 +40,7 @@
     "reflect-metadata": "^0.1.13",
     "sequelize": "^6.32.1",
     "sequelize-cli": "^6.6.1",
+    "sequelize-typescript": "^2.1.5",
     "stream-browserify": "^3.0.0",
     "timers-browserify": "^2.0.12",
     "tls-browserify": "^0.2.2",
@@ -57,7 +59,6 @@
     "sequelize": "sequelize",
     "migrate": "NODE_ENV=development ts-node ./node_modules/.bin/sequelize db:migrate",
     "migrate:undo": "NODE_ENV=development ts-node ./node_modules/.bin/sequelize db:migrate:undo"
-  
   },
   "eslintConfig": {
     "extends": [
