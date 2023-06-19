@@ -5,14 +5,8 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "outDir": "dist",
-    "types": [
-      "node"
-    ],
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "types": ["node"],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
@@ -26,9 +20,5 @@
     "noEmit": true,
     "jsx": "preserve"
   },
-  "include": [
-    "src",
-    "src/models",
-    "src/migrations"
-  ]
+  "include": ["src", "src/models", "src/migrations", "server/config",]
 }

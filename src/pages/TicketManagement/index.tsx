@@ -6,7 +6,7 @@ import { Button, Input, Table } from "antd";
 import { SearchOutlined, FilterOutlined } from "@ant-design/icons";
 import Popup from "../../components/control/btnLocVe";
 import axios from "axios";
-import Ticket from '../../models/Ticket';
+
 interface DataType {
   idTicket: number;
   BookingCode: string;
@@ -65,30 +65,22 @@ const TicketManagementPage = () => {
   const [popupVisible, setPopupVisible] = useState(false);
 
   const [tickets, setTickets] = useState<DataType[]>([]);
+
   useEffect(() => {
-    Ticket.getAllTickets()
-      .then(responseData => {
+    // Gọi API bằng Axios và lấy dữ liệu
+    axios
+      .get("http://localhost:8000/api/ticket")
+      .then(response => {
+        // Xử lý dữ liệu nhận được từ API
+        const responseData = response.data;
+        // Cập nhật state tickets với dữ liệu từ API
         setTickets(responseData);
       })
       .catch(error => {
+        // Xử lý lỗi nếu có
         console.log(error);
       });
   }, []);
-  // useEffect(() => {
-  //   // Gọi API bằng Axios và lấy dữ liệu
-  //   axios
-  //     .get("http://localhost:8000/api/ticket")
-  //     .then(response => {
-  //       // Xử lý dữ liệu nhận được từ API
-  //       const responseData = response.data;
-  //       // Cập nhật state tickets với dữ liệu từ API
-  //       setTickets(responseData);
-  //     })
-  //     .catch(error => {
-  //       // Xử lý lỗi nếu có
-  //       console.log(error);
-  //     });
-  // }, []);
 
   const showPopup = () => {
     setPopupVisible(true);
