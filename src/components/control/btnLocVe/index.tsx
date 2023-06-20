@@ -1,15 +1,46 @@
-import React from "react";
-import { Button, Checkbox, DatePicker, Radio } from "antd";
-import { FilterOutlined } from "@ant-design/icons";
+import React, { useState } from "react";
+import { Button, Checkbox, DatePicker, Radio, RadioChangeEvent } from "antd";
+import { CheckboxChangeEvent } from "antd/es/checkbox";
+
 
 interface PopupProps {
   visible: boolean;
   onClose: () => void;
+  onFilter: (values: any) => void;
 }
 
-const Popup: React.FC<PopupProps> = ({ visible, onClose }) => {
-  const getPopupContainer = (node: HTMLElement) => node;
+const Popup: React.FC<PopupProps> = ({ visible, onClose,onFilter  }) => {
 
+  const getPopupContainer = (node: HTMLElement) => node;
+  const [filterValues, setFilterValues] = useState({
+    fromDate: null,
+    toDate: null,
+    status: "",
+    gate: [],
+  });
+  const handleFilter = () => {
+    onFilter(filterValues);
+  };
+  const handleFromDateChange = (date: moment.Moment | null) => {
+    if (date) {
+      setFilterValues({ ...filterValues, fromDate: date });
+    }
+  };
+
+  const handleToDateChange = (date: moment.Moment | null) => {
+    if (date) {
+      setFilterValues({ ...filterValues, toDate: date });
+    }
+  };
+  
+  const handleStatusChange = (e: RadioChangeEvent) => {
+    setFilterValues({ ...filterValues, status: e.target.value });
+  };
+  
+  const handleGateChange = (checkedValues: CheckboxChangeEvent[]) => {
+  setFilterValues({ ...filterValues, gate: checkedValues });
+};
+  
   return (
     <div
       style={{
@@ -40,20 +71,28 @@ const Popup: React.FC<PopupProps> = ({ visible, onClose }) => {
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <div>
             <h4>Từ ngày</h4>
-            <DatePicker getPopupContainer={getPopupContainer} />
+            <DatePicker
+              getPopupContainer={getPopupContainer}
+              onChange={handleFromDateChange}
+            />
           </div>
           <div>
             <h4>Đến ngày</h4>
-            <DatePicker getPopupContainer={getPopupContainer} />
+            <DatePicker
+              getPopupContainer={getPopupContainer}
+              onChange={handleToDateChange}
+            />
           </div>
         </div>
         <div>
           <h4>Tình trạng sử dụng</h4>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <Radio>Tất cả</Radio>
-            <Radio>Đã sử dụng</Radio>
-            <Radio>Chưa sử dụng</Radio>
-            <Radio>Hết hạn</Radio>
+            <Radio.Group onChange={handleStatusChange}>
+              <Radio>Tất cả</Radio>
+              <Radio>Đã sử dụng</Radio>
+              <Radio>Chưa sử dụng</Radio>
+              <Radio>Hết hạn</Radio>
+            </Radio.Group>
           </div>
         </div>
         <div style={{ textAlign: "center", alignItems: "center" }}>
@@ -65,15 +104,17 @@ const Popup: React.FC<PopupProps> = ({ visible, onClose }) => {
               justifyContent: "space-between",
             }}
           >
-            <Checkbox style={{ flexBasis: "33%" }}>Tất cả</Checkbox>
+        <Checkbox.Group   onChange={handleGateChange}>
+        <Checkbox style={{ flexBasis: "33%" }}>Tất cả</Checkbox>
             <Checkbox style={{ flexBasis: "33%" }}>Cổng 1</Checkbox>
             <Checkbox style={{ flexBasis: "33%" }}>Cổng 2</Checkbox>
             <Checkbox style={{ flexBasis: "33%" }}>Cổng 3</Checkbox>
             <Checkbox style={{ flexBasis: "33%" }}>Cổng 4</Checkbox>
             <Checkbox style={{ flexBasis: "33%" }}>Cổng 5</Checkbox>
+        </Checkbox.Group>
           </div>
         </div>
-        <Button style={{ textAlign: "center" }} onClick={onClose}>
+        <Button style={{ textAlign: "center" }} onClick={handleFilter}>
           Lọc
         </Button>
       </div>

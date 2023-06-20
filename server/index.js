@@ -15,7 +15,7 @@ app.use(
 app.get("/api/ticket", async (req, res) => {
   try {
     // Lấy dữ liệu từ cơ sở dữ liệu
-    const query = "SELECT * FROM ticket";
+    const query = "SELECT * FROM tickets";
 
     // Thực hiện truy vấn
     const results = await sequelize.query(query);

@@ -18,11 +18,112 @@ interface DataType {
   CongCheckIn: string;
 }
 
+const renderStatus = (status: string) => {
+  let color, icon;
+
+  switch (status) {
+    case "Đã sử dụng":
+      return (
+        <Button
+          style={{
+            backgroundColor: "rgb(234, 241, 248)",
+            border: "1px solid rgb(145, 157, 186)",
+          }}
+        >
+          <div
+            style={{ display: "flex", alignItems: "center", color: "green" }}
+          >
+            <div
+              style={{
+                width: "10px",
+                height: "10px",
+                borderRadius: "50%",
+                backgroundColor: "green",
+                marginRight: "6px",
+              }}
+            />
+            {status}
+          </div>
+        </Button>
+      );
+    case "Chưa sử dụng":
+      return (
+        <Button
+          style={{
+            backgroundColor: "rgb(222, 246, 224)",
+            border: "1px solid green",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              color: "rgb(3, 172, 0)",
+            }}
+          >
+            <div
+              style={{
+                width: "10px",
+                height: "10px",
+                borderRadius: "50%",
+                backgroundColor: "rgb(3, 172, 0)",
+                marginRight: "6px",
+              }}
+            />
+            {status}
+          </div>
+        </Button>
+      );
+    case "Ngưng sử dụng":
+      return (
+        <Button
+          style={{
+            backgroundColor: "rgb(248, 235, 232)",
+            border: "1px solid red",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", color: "red" }}>
+            <div
+              style={{
+                width: "10px",
+                height: "10px",
+                borderRadius: "50%",
+                backgroundColor: "red",
+                marginRight: "6px",
+              }}
+            />
+            {/* {status} */}
+            {"Hết hạn"}
+          </div>
+        </Button>
+      );
+    default:
+      color = "";
+      icon = null;
+  }
+
+  return (
+    <Button>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <div
+          style={{
+            width: "10px",
+            height: "10px",
+            borderRadius: "50%",
+            backgroundColor: color,
+            marginRight: "6px",
+          }}
+        />
+        {icon}
+      </div>
+    </Button>
+  );
+};
 const columns = [
   {
     title: "STT",
-    dataIndex: "idTicket",
-    key: "idTicket",
+    dataIndex: "id",
+    key: "id",
   },
   {
     title: "Booking code",
@@ -43,6 +144,7 @@ const columns = [
     title: "Tình trạng sử dụng",
     dataIndex: "TinhTrangSuDung",
     key: "TinhTrangSuDung",
+    render: (status: string) => renderStatus(status),
   },
   {
     title: "Ngày Sử dụng",
@@ -63,7 +165,7 @@ const columns = [
 
 const TicketManagementPage = () => {
   const [popupVisible, setPopupVisible] = useState(false);
-
+  const [filteredTickets, setFilteredTickets] = useState<DataType[]>([]);
   const [tickets, setTickets] = useState<DataType[]>([]);
 
   useEffect(() => {
@@ -89,10 +191,53 @@ const TicketManagementPage = () => {
   const closePopup = () => {
     setPopupVisible(false);
   };
-
   const paginationConfig = {
     pageSize: 12,
   };
+
+
+  const handleFilter = (values) => {
+    const { fromDate, toDate, status, gate } = values;
+  
+    // Lọc dữ liệu theo các điều kiện lọc
+    let filteredData = tickets;
+  
+    if (fromDate) {
+      filteredData = filteredData.filter(
+        (ticket) => ticket.NgaySuDung >= fromDate.format("YYYY-MM-DD")
+      );
+    }
+  
+    if (toDate) {
+      filteredData = filteredData.filter(
+        (ticket) => ticket.NgaySuDung <= toDate.format("YYYY-MM-DD")
+      );
+    }
+  
+    if (status) {
+      filteredData = filteredData.filter(
+        (ticket) => ticket.TinhTrangSuDung === status
+      );
+    }
+  
+    if (gate && gate.includes("all")) {
+      filteredData = filteredData.filter(
+        (ticket) => ticket.CongCheckIn !== ""
+      );
+    } else if (gate && gate.length > 0) {
+      filteredData = filteredData.filter((ticket) =>
+        gate.includes(ticket.CongCheckIn)
+      );
+    }
+  
+    // Cập nhật dữ liệu đã lọc vào state
+    setFilteredTickets(filteredData);
+  
+    // Đóng popup
+    closePopup();
+  };
+  
+
   return (
     <div className="MainApp">
       <SiderMenu selectedKey={"2"} />
@@ -126,14 +271,15 @@ const TicketManagementPage = () => {
                 <FilterOutlined />
                 Lọc vé
               </Button>
-              <Popup visible={popupVisible} onClose={closePopup} />
+              <Popup visible={popupVisible} onClose={closePopup} onFilter={handleFilter} />
+
               <Button>Xuất file</Button>
             </div>
           </div>
           <div className="table">
             <Table
               columns={columns}
-              dataSource={tickets}
+              dataSource={filteredTickets.length > 0 ? filteredTickets : tickets}
               pagination={paginationConfig}
             />
           </div>
