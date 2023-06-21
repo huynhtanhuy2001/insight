@@ -2,14 +2,19 @@ import React, { useEffect, useState } from "react";
 import SiderMenu from "../../components/common/Menu";
 import SearchComponent from "../../components/control/search/search";
 import AccNotiMail from "../../components/control/header/Accnotimail/AccNotiMail";
-import { Button, Input, Table,Dropdown,Menu } from "antd";
-import { SearchOutlined, FilterOutlined } from "@ant-design/icons";
-import Popup from "../../components/control/btnLocVe";
+import { Button, Input, Table, Dropdown, Menu, Modal } from "antd";
+
+import {
+  SearchOutlined,
+  FilterOutlined,
+  EllipsisOutlined,
+} from "@ant-design/icons";
+import PopupLocVe from "../../components/control/btnLocVe/index";
 import axios from "axios";
 import moment from "moment";
-import BtnDoiNgay from "../../components/control/btnDoiNgay/index";
+import PopupDoiNgay from "../../components/control/btnDoiNgay/index";
 interface DataType {
-  idTicket: number;
+  id: number;
   BookingCode: string;
   SoVe: string;
   TenSuKien: string;
@@ -17,6 +22,7 @@ interface DataType {
   NgaySuDung: string;
   NgayXuatVe: string;
   CongCheckIn: string;
+  TenLoaiVe: string;
 }
 interface FilterValues {
   fromDate: Date;
@@ -127,29 +133,28 @@ const renderStatus = (status: string) => {
 };
 
 const TicketManagementPage = () => {
-  const [popupVisible, setPopupVisible] = useState(false);
+  const [locVePopupVisible, setLocVePopupVisible] = useState(false);
+  const [doiNgayPopupVisible, setDoiNgayPopupVisible] = useState(false);
+
   const [filteredTickets, setFilteredTickets] = useState<DataType[]>([]);
   const [tickets, setTickets] = useState<DataType[]>([]);
   const [selectedTicket, setSelectedTicket] = useState<DataType | null>(null);
-
+ 
   useEffect(() => {
-    // Gọi API bằng Axios và lấy dữ liệu
     axios
       .get("http://localhost:8000/api/ticket")
       .then(response => {
-        // Xử lý dữ liệu nhận được từ API
         const responseData = response.data;
-        // Cập nhật state tickets với dữ liệu từ API
+
         setTickets(responseData);
       })
       .catch(error => {
-        // Xử lý lỗi nếu có
         console.log(error);
       });
   }, []);
 
   const closePopup = () => {
-    setPopupVisible(false);
+    setLocVePopupVisible(false);
   };
   const paginationConfig = {
     pageSize: 12,
@@ -158,7 +163,6 @@ const TicketManagementPage = () => {
   const handleFilter = (values: FilterValues) => {
     const { fromDate, toDate, status, gate } = values;
 
-    // Lọc dữ liệu theo các điều kiện lọc
     let filteredData = tickets;
 
     if (fromDate) {
@@ -201,41 +205,56 @@ const TicketManagementPage = () => {
   };
   const showPopupDoiNgay = (record: DataType) => {
     setSelectedTicket(record);
-    setPopupVisible(true);
+    setDoiNgayPopupVisible(true);
   };
   const showPopupLocVe = () => {
-    setPopupVisible(true);
+    setLocVePopupVisible(true);
   };
   //render
 
   const renderActionIcon = (record: DataType) => {
-    if (!record.NgaySuDung || !record.NgayXuatVe) {
+    if (!record.NgaySuDung) {
       const menu = (
-        <Menu>
-          <Menu.Item>
+        <Menu style={{ backgroundColor: "orange", textAlign: "center" }}>
+          <Menu.Item style={{ backgroundColor: "orange" }}>
+            <Button
+              style={{
+                border: "none",
+                padding: 0,
+                display: "block",
+                backgroundColor: "orange",
+                color: "black",
+              }}
+            >
+              Sử dụng vé
+            </Button>
             <Button
               onClick={() => {
-                // Mở popup và hiển thị dữ liệu
                 showPopupDoiNgay(record);
+                setDoiNgayPopupVisible(true);
               }}
-              style={{ border: "none", padding: 0 }}
+              style={{
+                border: "none",
+                padding: 0,
+                backgroundColor: "orange",
+                color: "black",
+              }}
             >
-              Đổi ngày
+              Đổi ngày sử dụng
             </Button>
           </Menu.Item>
-          {/* Thêm các MenuItem khác nếu cần */}
         </Menu>
       );
-  
+
       return (
         <Dropdown overlay={menu} trigger={["click"]}>
           <Button style={{ border: "none", padding: 0 }}>
-            <i className="fas fa-ellipsis-h" />
+            <EllipsisOutlined style={{ transform: "rotate(90deg)" }} />
           </Button>
         </Dropdown>
       );
     }
-  
+
     return null;
   };
   const actionColumn = {
@@ -289,9 +308,10 @@ const TicketManagementPage = () => {
       dataIndex: "CongCheckIn",
       key: "CongCheckIn",
     },
- 
+
     actionColumn,
   ];
+  console.log(selectedTicket);
 
   return (
     <div className="MainApp">
@@ -314,7 +334,6 @@ const TicketManagementPage = () => {
             padding: "24px 63px 0px 24px",
           }}
         >
-  
           <h2>Danh sách vé</h2>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <Input.Search
@@ -327,8 +346,8 @@ const TicketManagementPage = () => {
                 <FilterOutlined />
                 Lọc vé
               </Button>
-              <Popup
-                visible={popupVisible}
+              <PopupLocVe
+                visible={locVePopupVisible}
                 onClose={closePopup}
                 onFilter={handleFilter}
               />
@@ -344,15 +363,21 @@ const TicketManagementPage = () => {
               }
               pagination={paginationConfig}
             />
+            <Modal
+              title="Đổi ngày sử dụng"
+              visible={doiNgayPopupVisible}
+              onCancel={closePopup}
+              footer={null}
+            >
+              {doiNgayPopupVisible && selectedTicket && (
+                <PopupDoiNgay selectedTicket={selectedTicket} ticketId={selectedTicket?.id} />
+                
+              )}
+            </Modal>
+       
           </div>
+         
         </div>
-        {/* Render component BtnDoiNgay trong popup */}
-        {popupVisible && selectedTicket && (
-          <div className="popup">
-            <BtnDoiNgay ticketId={selectedTicket.idTicket} />
-            {/* Các phần tử UI khác trong popup */}
-          </div>
-        )}
       </div>
     </div>
   );

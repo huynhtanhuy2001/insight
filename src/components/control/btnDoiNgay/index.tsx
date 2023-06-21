@@ -1,49 +1,44 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Table } from "antd";
 
 interface BtnDoiNgayProps {
   ticketId: number;
+  selectedTicket: DataType | null;
 }
 
-interface TicketData {
+interface DataType {
+  id: number;
+  BookingCode: string;
   SoVe: string;
   TenSuKien: string;
+  TinhTrangSuDung: string;
   NgaySuDung: string;
+  NgayXuatVe: string;
+  CongCheckIn: string;
+  TenLoaiVe: string;
 }
 
-const BtnDoiNgay: React.FC<BtnDoiNgayProps> = ({ ticketId }) => {
-  const [ticketData, setTicketData] = useState<TicketData | null>(null);
-
-  useEffect(() => {
-    // Gọi API để lấy dữ liệu của vé từ MySQL
-    axios
-      .get(`http://localhost:8000/api/ticket/${ticketId}`)
-      .then((response) => {
-        // Xử lý dữ liệu nhận được từ API
-        const responseData = response.data;
-        // Cập nhật state ticketData với dữ liệu từ API
-        setTicketData(responseData);
-      })
-      .catch((error) => {
-        // Xử lý lỗi nếu có
-        console.log(error);
-      });
-  }, [ticketId]);
-
+const PopupDoiNgay: React.FC<BtnDoiNgayProps> = ({
+  selectedTicket,
+  ticketId,
+}) => {
   return (
     <div>
-      {ticketData ? (
+      {ticketId ? (
         <div>
-          <p>Số vé: {ticketData.SoVe}</p>
-          <p>Tên sự kiện: {ticketData.TenSuKien}</p>
-          <p>Ngày sử dụng: {ticketData.NgaySuDung}</p>
-          {/* Các phần tử UI khác */}
+          <p>Số vé: {selectedTicket?.SoVe}</p>
+          <p>Số vé: {selectedTicket?.TenLoaiVe}</p>
+          <p>Tên sự kiện: {selectedTicket?.TenSuKien}</p>
+          <p>Ngày sử dụng: {selectedTicket?.NgaySuDung}</p>
         </div>
       ) : (
-        <p>Loading...</p>
+        <div>
+          <p>Loading...</p>
+        </div>
       )}
     </div>
   );
 };
 
-export default BtnDoiNgay;
+export default PopupDoiNgay;
