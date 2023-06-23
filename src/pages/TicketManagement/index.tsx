@@ -135,11 +135,12 @@ const renderStatus = (status: string) => {
 const TicketManagementPage = () => {
   const [locVePopupVisible, setLocVePopupVisible] = useState(false);
   const [doiNgayPopupVisible, setDoiNgayPopupVisible] = useState(false);
-
+  const [popupVisible, setPopupVisible] = useState(false);
   const [filteredTickets, setFilteredTickets] = useState<DataType[]>([]);
   const [tickets, setTickets] = useState<DataType[]>([]);
   const [selectedTicket, setSelectedTicket] = useState<DataType | null>(null);
- 
+  const [isPopupDoiNgayVisible, setIsPopupDoiNgayVisible] = useState(false);
+
   useEffect(() => {
     axios
       .get("http://localhost:8000/api/ticket")
@@ -152,10 +153,11 @@ const TicketManagementPage = () => {
         console.log(error);
       });
   }, []);
-
   const closePopup = () => {
-    setLocVePopupVisible(false);
+    setPopupVisible(false);
+
   };
+
   const paginationConfig = {
     pageSize: 12,
   };
@@ -205,11 +207,15 @@ const TicketManagementPage = () => {
   };
   const showPopupDoiNgay = (record: DataType) => {
     setSelectedTicket(record);
-    setDoiNgayPopupVisible(true);
+    setIsPopupDoiNgayVisible(true);
   };
   const showPopupLocVe = () => {
     setLocVePopupVisible(true);
   };
+  const closePopupDoiNgay = () => {
+    setIsPopupDoiNgayVisible(false);
+  };
+
   //render
 
   const renderActionIcon = (record: DataType) => {
@@ -366,17 +372,18 @@ const TicketManagementPage = () => {
             <Modal
               title="Đổi ngày sử dụng"
               visible={doiNgayPopupVisible}
-              onCancel={closePopup}
+            
               footer={null}
             >
               {doiNgayPopupVisible && selectedTicket && (
-                <PopupDoiNgay selectedTicket={selectedTicket} ticketId={selectedTicket?.id} />
-                
+                <PopupDoiNgay
+                onClose={closePopupDoiNgay}
+                  selectedTicket={selectedTicket}
+                  ticketId={selectedTicket?.id}
+                />
               )}
             </Modal>
-       
           </div>
-         
         </div>
       </div>
     </div>
