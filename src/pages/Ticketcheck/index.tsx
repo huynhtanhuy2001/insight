@@ -148,7 +148,8 @@ const TicketCheckPage = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/ticket")
+    
+      .get("http://localhost:8000/api/ticketpakage")
       .then(response => {
         const responseData = response.data;
 

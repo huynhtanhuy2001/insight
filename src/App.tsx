@@ -7,13 +7,13 @@ import TicketManagementPage from "./pages/TicketManagement";
 import TicketCheckPage from "./pages/Ticketcheck";
 
 function App() {
+
+
   return (
     <>
       <BrowserRouter>
         <Routes>
-    
-          <Route path="/" element={<HomePage />} />
-          <Route path="/home" element={<HomePage />} />
+        <Route path="/home" element={<HomePage />} />
           <Route path="/ticketmanagement" element={<TicketManagementPage />} />
           <Route path="/ticketcheck" element={<TicketCheckPage />} />
         </Routes>

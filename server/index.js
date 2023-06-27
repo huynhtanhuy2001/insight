@@ -25,17 +25,11 @@ app.get("/api/ticket", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-app.get("/api/ticket/:id", async (req, res) => {
+//gói vé
+app.get("/api/ticketpakage", async (req, res) => {
   try {
-    const { id } = req.params;
-
-    // Kiểm tra giá trị id có tồn tại và có giá trị hợp lệ hay không
-    if (!id || isNaN(id)) {
-      return res.status(400).json({ error: "Invalid ticket ID" });
-    }
-
-    // Lấy dữ liệu từ cơ sở dữ liệu với ID chỉ định
-    const query = `SELECT * FROM ticket WHERE id = ${id}`;
+    // Lấy dữ liệu từ cơ sở dữ liệu
+    const query = "SELECT * FROM ticketpakage";
 
     // Thực hiện truy vấn
     const results = await sequelize.query(query);
@@ -45,7 +39,6 @@ app.get("/api/ticket/:id", async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
 
 //CRUD
 app.use(express.json());

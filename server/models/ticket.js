@@ -1,48 +1,48 @@
-'use strict';
+"use strict";
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('ticket', {
+    await queryInterface.createTable("ticket", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       BookingCode: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       SoVe: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       TenSuKien: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       TinhTrangSuDung: {
-        type: Sequelize.ENUM('Đã sử dụng', 'Chưa sử dụng', 'Ngưng sử dụng'),
-        defaultValue: 'Chưa sử dụng'
+        type: Sequelize.ENUM("Đã sử dụng", "Chưa sử dụng", "Ngưng sử dụng"),
+        defaultValue: "Chưa sử dụng",
       },
       NgaySuDung: {
-        type: Sequelize.DATEONLY
+        type: Sequelize.DATEONLY,
       },
       NgayXuatVe: {
-        type: Sequelize.DATEONLY
+        type: Sequelize.DATEONLY,
       },
       CongCheckIn: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
-      createdAt: {
+      TenLoaiVe: {
         allowNull: false,
-        type: Sequelize.DATE
+        type: Sequelize.STRING,
       },
       updatedAt: {
         allowNull: false,
-        type: Sequelize.DATE
-      }
+        type: Sequelize.DATE,
+      },
     });
   },
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('ticket');
-  }
+    await queryInterface.dropTable("ticket");
+  },
 };
