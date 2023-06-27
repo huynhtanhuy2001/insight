@@ -2,7 +2,16 @@ import React, { useEffect, useState } from "react";
 import SiderMenu from "../../components/common/Menu";
 import SearchComponent from "../../components/control/search/search";
 import AccNotiMail from "../../components/control/header/Accnotimail/AccNotiMail";
-import { Button, Input, Table, Dropdown, Menu, Modal } from "antd";
+import {
+  Button,
+  Input,
+  Table,
+  Dropdown,
+  Menu,
+  Modal,
+  Radio,
+  DatePicker,
+} from "antd";
 
 import {
   SearchOutlined,
@@ -13,6 +22,7 @@ import PopupLocVe from "../../components/control/btnLocVe/index";
 import axios from "axios";
 import moment from "moment";
 import PopupDoiNgay from "../../components/control/btnDoiNgay/index";
+import BtnDatePicker from "../../components/control/btnDate";
 interface DataType {
   id: number;
   BookingCode: string;
@@ -132,14 +142,9 @@ const renderStatus = (status: string) => {
   );
 };
 
-const TicketManagementPage = () => {
-  const [locVePopupVisible, setLocVePopupVisible] = useState(false);
-  const [doiNgayPopupVisible, setDoiNgayPopupVisible] = useState(false);
-  const [popupVisible, setPopupVisible] = useState(false);
+const TicketCheckPage = () => {
   const [filteredTickets, setFilteredTickets] = useState<DataType[]>([]);
   const [tickets, setTickets] = useState<DataType[]>([]);
-  const [selectedTicket, setSelectedTicket] = useState<DataType | null>(null);
-  const [isPopupDoiNgayVisible, setIsPopupDoiNgayVisible] = useState(false);
 
   useEffect(() => {
     axios
@@ -153,10 +158,6 @@ const TicketManagementPage = () => {
         console.log(error);
       });
   }, []);
-  const closePopup = () => {
-    setPopupVisible(false);
-
-  };
 
   const paginationConfig = {
     pageSize: 12,
@@ -201,19 +202,6 @@ const TicketManagementPage = () => {
 
     // Cập nhật dữ liệu đã lọc vào state
     setFilteredTickets(filteredData);
-
-    // Đóng popup
-    closePopup();
-  };
-  const showPopupDoiNgay = (record: DataType) => {
-    setSelectedTicket(record);
-    setIsPopupDoiNgayVisible(true);
-  };
-  const showPopupLocVe = () => {
-    setLocVePopupVisible(true);
-  };
-  const closePopupDoiNgay = () => {
-    setIsPopupDoiNgayVisible(false);
   };
 
   //render
@@ -235,10 +223,7 @@ const TicketManagementPage = () => {
               Sử dụng vé
             </Button>
             <Button
-              onClick={() => {
-                showPopupDoiNgay(record);
-                setDoiNgayPopupVisible(true);
-              }}
+              onClick={() => {}}
               style={{
                 border: "none",
                 padding: 0,
@@ -317,12 +302,12 @@ const TicketManagementPage = () => {
 
     actionColumn,
   ];
-  console.log(selectedTicket);
 
   return (
     <div className="MainApp">
-      <SiderMenu  />
-      <div style={{ width: "100%" }}>
+      <SiderMenu />
+
+      <div>
         <div
           style={{
             display: "flex",
@@ -335,54 +320,93 @@ const TicketManagementPage = () => {
 
         <div
           style={{
-            backgroundColor: "white",
-            borderRadius: "24px",
-            padding: "24px 63px 0px 24px",
+            display: "flex",
           }}
         >
-          <h2>Danh sách vé</h2>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <Input.Search
-              style={{ width: "300px" }}
-              placeholder="Tìm bằng số vé"
-              enterButton={<SearchOutlined />}
-            ></Input.Search>
-            <div>
-              <Button onClick={showPopupLocVe}>
-                <FilterOutlined />
-                Lọc vé
-              </Button>
-              <PopupLocVe
-                visible={locVePopupVisible}
-                onClose={closePopup}
-                onFilter={handleFilter}
+          <div
+            style={{
+              width: "1097px",
+              backgroundColor: "white",
+              borderRadius: "24px",
+              padding: "24px 10px 0px 10px",
+            }}
+          >
+            <h2>Danh sách vé</h2>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <Input.Search
+                style={{ width: "300px" }}
+                placeholder="Tìm bằng số vé"
+                enterButton={<SearchOutlined />}
+              ></Input.Search>
+            </div>
+            <div className="table">
+              <Table
+                columns={columns}
+                dataSource={
+                  filteredTickets.length > 0 ? filteredTickets : tickets
+                }
+                pagination={paginationConfig}
               />
-
-              <Button>Xuất file</Button>
             </div>
           </div>
-          <div className="table">
-            <Table
-              columns={columns}
-              dataSource={
-                filteredTickets.length > 0 ? filteredTickets : tickets
-              }
-              pagination={paginationConfig}
-            />
-            <Modal
-              title="Đổi ngày sử dụng"
-              visible={doiNgayPopupVisible}
-            
-              footer={null}
+          <div
+            style={{
+              width: "max-content",
+              background: "white",
+              borderRadius: "24px",
+              marginLeft: "10px",
+              padding: "20px",
+            }}
+          >
+            <h2>Lọc vé</h2>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "baseline",
+              }}
             >
-              {doiNgayPopupVisible && selectedTicket && (
-                <PopupDoiNgay
-                onClose={closePopupDoiNgay}
-                  selectedTicket={selectedTicket}
-                  ticketId={selectedTicket?.id}
-                />
-              )}
-            </Modal>
+              <h4>Tình trạng đối soát</h4>
+              <Radio.Group style={{ display: "grid", paddingLeft: "20px" }}>
+                <Radio>Tất cả</Radio>
+                <Radio>Đã đối soát</Radio>
+                <Radio>Chưa đối soát</Radio>
+              </Radio.Group>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                paddingRight: "55px",
+              }}
+            >
+              <h4>Loại vé</h4>
+              <h4>Vé cổng</h4>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <h4>Từ ngày</h4>
+              <BtnDatePicker />
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <h4>Đến ngày</h4>
+              <BtnDatePicker />
+            </div>
+            <div style={{ textAlign: "center" }}>
+              <Button>Lọc</Button>
+            </div>
           </div>
         </div>
       </div>
@@ -390,4 +414,4 @@ const TicketManagementPage = () => {
   );
 };
 
-export default TicketManagementPage;
+export default TicketCheckPage;

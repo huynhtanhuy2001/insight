@@ -1,7 +1,6 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
 
-
 const LineChart = () => {
   const data = {
     labels: ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7", "CN"],
@@ -24,9 +23,14 @@ const LineChart = () => {
     },
   };
 
-
-
-  return <Line className="linechart" data={data} options={options}  />;
+  return (
+    <Line
+  
+      className="linechart"
+      data={data}
+      options={options}
+    />
+  );
 };
 
 export default LineChart;
