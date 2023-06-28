@@ -7,22 +7,18 @@ import { Button, Input, Table, Dropdown, Menu, Modal } from "antd";
 import {
   SearchOutlined,
   FilterOutlined,
-  EllipsisOutlined,
+  FormOutlined,
 } from "@ant-design/icons";
-import PopupLocVe from "../../components/control/btnLocVe/index";
 import axios from "axios";
 import moment from "moment";
-import PopupDoiNgay from "../../components/control/btnDoiNgay/index";
 interface DataType {
   id: number;
-  BookingCode: string;
-  SoVe: string;
-  TenSuKien: string;
-  TinhTrangSuDung: string;
-  NgaySuDung: string;
-  NgayXuatVe: string;
-  CongCheckIn: string;
-  TenLoaiVe: string;
+  PackageCode: string;
+  PackageName: string;
+  ApplicableDate: string;
+  ExpirationDate: string;
+  Fare: string;
+  TinhTrang: string;
 }
 interface FilterValues {
   fromDate: Date;
@@ -34,7 +30,7 @@ const renderStatus = (status: string) => {
   let color, icon;
 
   switch (status) {
-    case "Đã sử dụng":
+    case "Đang áp dụng":
       return (
         <Button
           style={{
@@ -58,7 +54,7 @@ const renderStatus = (status: string) => {
           </div>
         </Button>
       );
-    case "Chưa sử dụng":
+    case "Tắt":
       return (
         <Button
           style={{
@@ -86,29 +82,7 @@ const renderStatus = (status: string) => {
           </div>
         </Button>
       );
-    case "Ngưng sử dụng":
-      return (
-        <Button
-          style={{
-            backgroundColor: "rgb(248, 235, 232)",
-            border: "1px solid red",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", color: "red" }}>
-            <div
-              style={{
-                width: "10px",
-                height: "10px",
-                borderRadius: "50%",
-                backgroundColor: "red",
-                marginRight: "6px",
-              }}
-            />
-            {/* {status} */}
-            {"Hết hạn"}
-          </div>
-        </Button>
-      );
+
     default:
       color = "";
       icon = null;
@@ -133,17 +107,13 @@ const renderStatus = (status: string) => {
 };
 
 const ServicePackPage = () => {
-  const [locVePopupVisible, setLocVePopupVisible] = useState(false);
-  const [doiNgayPopupVisible, setDoiNgayPopupVisible] = useState(false);
-  const [popupVisible, setPopupVisible] = useState(false);
   const [filteredTickets, setFilteredTickets] = useState<DataType[]>([]);
   const [tickets, setTickets] = useState<DataType[]>([]);
   const [selectedTicket, setSelectedTicket] = useState<DataType | null>(null);
-  const [isPopupDoiNgayVisible, setIsPopupDoiNgayVisible] = useState(false);
 
   useEffect(() => {
     axios
-      .get("http://localhost:8000/api/ticket")
+      .get("http://localhost:8000/api/ticketpakage")
       .then(response => {
         const responseData = response.data;
 
@@ -153,15 +123,28 @@ const ServicePackPage = () => {
         console.log(error);
       });
   }, []);
-  const closePopup = () => {
-    setPopupVisible(false);
-
-  };
 
   const paginationConfig = {
     pageSize: 12,
+    total: 240,
+    current: 1,
+    showSizeChanger: false, // hide size changer
   };
-
+  const renderActionIcon = (record: DataType) => {
+    return (
+      <Button
+        style={{
+          display: "flex",
+          alignItems: "center",
+          border: "none",
+          color: "orange",
+        }}
+      >
+        <FormOutlined style={{ marginRight: "5px" }} />
+        <p style={{ margin: "0" }}>Cập nhật</p>
+      </Button>
+    );
+  };
   const handleFilter = (values: FilterValues) => {
     const { fromDate, toDate, status, gate } = values;
 
@@ -172,7 +155,8 @@ const ServicePackPage = () => {
 
       filteredData = filteredData.filter(
         ticket =>
-          moment(ticket.NgaySuDung).format("YYYY-MM-DD") >= formattedFromDate
+          moment(ticket.ApplicableDate).format("YYYY-MM-DD") >=
+          formattedFromDate
       );
     }
 
@@ -181,88 +165,18 @@ const ServicePackPage = () => {
 
       filteredData = filteredData.filter(
         ticket =>
-          moment(ticket.NgaySuDung).format("YYYY-MM-DD") <= formattedToDate
+          moment(ticket.ExpirationDate).format("YYYY-MM-DD") <= formattedToDate
       );
     }
 
     if (status) {
-      filteredData = filteredData.filter(
-        ticket => ticket.TinhTrangSuDung === status
-      );
-    }
-
-    if (gate && gate.includes("all")) {
-      filteredData = filteredData.filter(ticket => ticket.CongCheckIn !== "");
-    } else if (gate && gate.length > 0) {
-      filteredData = filteredData.filter(ticket =>
-        gate.includes(ticket.CongCheckIn)
-      );
+      filteredData = filteredData.filter(ticket => ticket.TinhTrang === status);
     }
 
     // Cập nhật dữ liệu đã lọc vào state
     setFilteredTickets(filteredData);
-
-    // Đóng popup
-    closePopup();
-  };
-  const showPopupDoiNgay = (record: DataType) => {
-    setSelectedTicket(record);
-    setIsPopupDoiNgayVisible(true);
-  };
-  const showPopupLocVe = () => {
-    setLocVePopupVisible(true);
-  };
-  const closePopupDoiNgay = () => {
-    setIsPopupDoiNgayVisible(false);
   };
 
-  //render
-
-  const renderActionIcon = (record: DataType) => {
-    if (!record.NgaySuDung) {
-      const menu = (
-        <Menu style={{ backgroundColor: "orange", textAlign: "center" }}>
-          <Menu.Item style={{ backgroundColor: "orange" }}>
-            <Button
-              style={{
-                border: "none",
-                padding: 0,
-                display: "block",
-                backgroundColor: "orange",
-                color: "black",
-              }}
-            >
-              Sử dụng vé
-            </Button>
-            <Button
-              onClick={() => {
-                showPopupDoiNgay(record);
-                setDoiNgayPopupVisible(true);
-              }}
-              style={{
-                border: "none",
-                padding: 0,
-                backgroundColor: "orange",
-                color: "black",
-              }}
-            >
-              Đổi ngày sử dụng
-            </Button>
-          </Menu.Item>
-        </Menu>
-      );
-
-      return (
-        <Dropdown overlay={menu} trigger={["click"]}>
-          <Button style={{ border: "none", padding: 0 }}>
-            <EllipsisOutlined style={{ transform: "rotate(90deg)" }} />
-          </Button>
-        </Dropdown>
-      );
-    }
-
-    return null;
-  };
   const actionColumn = {
     title: "",
     dataIndex: "actions",
@@ -279,49 +193,48 @@ const ServicePackPage = () => {
       key: "id",
     },
     {
-      title: "Booking code",
-      dataIndex: "BookingCode",
-      key: "BookingCode",
+      title: "Mã gói",
+      dataIndex: "PackageCode",
+      key: "PackageCode",
     },
     {
-      title: "Số vé",
-      dataIndex: "SoVe",
-      key: "SoVe",
+      title: "Tên gói vé",
+      dataIndex: "PackageName",
+      key: "PackageName",
     },
     {
-      title: "Tên sự kiện",
-      dataIndex: "TenSuKien",
-      key: "TenSuKien",
+      title: "Ngày áp dụng",
+      dataIndex: "ApplicableDate",
+      key: "ApplicableDate",
     },
     {
-      title: "Tình trạng sử dụng",
-      dataIndex: "TinhTrangSuDung",
-      key: "TinhTrangSuDung",
+      title: "Ngày hết hạn",
+      dataIndex: "ExpirationDate",
+      key: "ExpirationDate",
+    },
+    {
+      title: "Giá vé",
+      dataIndex: "Fare",
+      key: "Fare",
+    },
+    {
+      title: "Giá Combo",
+      dataIndex: "ComboPrice",
+      key: "ComboPrice",
+    },
+    {
+      title: "Tình trạng ",
+      dataIndex: "TinhTrang",
+      key: "TinhTrang",
       render: (status: string) => renderStatus(status),
     },
-    {
-      title: "Ngày Sử dụng",
-      dataIndex: "NgaySuDung",
-      key: "NgaySuDung",
-    },
-    {
-      title: "Ngày xuất vé",
-      dataIndex: "NgayXuatVe",
-      key: "NgayXuatVe",
-    },
-    {
-      title: "Cổng check in",
-      dataIndex: "CongCheckIn",
-      key: "CongCheckIn",
-    },
-
     actionColumn,
   ];
   console.log(selectedTicket);
 
   return (
     <div className="MainApp">
-      <SiderMenu  />
+      <SiderMenu />
       <div style={{ width: "100%" }}>
         <div
           style={{
@@ -340,7 +253,7 @@ const ServicePackPage = () => {
             padding: "24px 63px 0px 24px",
           }}
         >
-          <h2>Danh sách vé</h2>
+          <h2>Danh sách gói vé</h2>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <Input.Search
               style={{ width: "300px" }}
@@ -348,15 +261,10 @@ const ServicePackPage = () => {
               enterButton={<SearchOutlined />}
             ></Input.Search>
             <div>
-              <Button onClick={showPopupLocVe}>
+              <Button>
                 <FilterOutlined />
                 Lọc vé
               </Button>
-              <PopupLocVe
-                visible={locVePopupVisible}
-                onClose={closePopup}
-                onFilter={handleFilter}
-              />
 
               <Button>Xuất file</Button>
             </div>
@@ -369,20 +277,6 @@ const ServicePackPage = () => {
               }
               pagination={paginationConfig}
             />
-            <Modal
-              title="Đổi ngày sử dụng"
-              visible={doiNgayPopupVisible}
-            
-              footer={null}
-            >
-              {doiNgayPopupVisible && selectedTicket && (
-                <PopupDoiNgay
-                onClose={closePopupDoiNgay}
-                  selectedTicket={selectedTicket}
-                  ticketId={selectedTicket?.id}
-                />
-              )}
-            </Modal>
           </div>
         </div>
       </div>

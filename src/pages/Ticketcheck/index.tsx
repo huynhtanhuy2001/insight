@@ -61,6 +61,9 @@ const TicketCheckPage = () => {
 
   const paginationConfig = {
     pageSize: 12,
+    total: 240,
+    current: 1,
+    showSizeChanger: false, // hide size changer
   };
 
   const handleFilter = (values: FilterValues) => {

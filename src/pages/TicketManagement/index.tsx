@@ -155,11 +155,13 @@ const TicketManagementPage = () => {
   }, []);
   const closePopup = () => {
     setPopupVisible(false);
-
   };
 
   const paginationConfig = {
     pageSize: 12,
+    total: 240,
+    current: 1,
+    showSizeChanger: false, // hide size changer
   };
 
   const handleFilter = (values: FilterValues) => {
@@ -321,7 +323,7 @@ const TicketManagementPage = () => {
 
   return (
     <div className="MainApp">
-      <SiderMenu  />
+      <SiderMenu />
       <div style={{ width: "100%" }}>
         <div
           style={{
@@ -372,12 +374,11 @@ const TicketManagementPage = () => {
             <Modal
               title="Đổi ngày sử dụng"
               visible={doiNgayPopupVisible}
-            
               footer={null}
             >
               {doiNgayPopupVisible && selectedTicket && (
                 <PopupDoiNgay
-                onClose={closePopupDoiNgay}
+                  onClose={closePopupDoiNgay}
                   selectedTicket={selectedTicket}
                   ticketId={selectedTicket?.id}
                 />
