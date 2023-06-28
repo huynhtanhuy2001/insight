@@ -43,8 +43,8 @@ const SiderMenu = () => {
             <Link to="/equipment">Quản lý thiết bị</Link>
           </Menu.Item>
           <SubMenu key="sub1" icon={<SettingOutlined />} title="Cài đặt">
-            <Menu.Item key="/services">
-              <Link to="/services">Gói dịch vụ</Link>
+            <Menu.Item key="/servicepack">
+              <Link to="/servicepack">Gói dịch vụ</Link>
             </Menu.Item>
           </SubMenu>
         </Menu>

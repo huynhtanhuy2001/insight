@@ -32,7 +32,7 @@ interface DataType {
   NgaySuDung: string;
   NgayXuatVe: string;
   CongCheckIn: string;
-  TenLoaiVe: string;
+  DoiSoat: string;
 }
 interface FilterValues {
   fromDate: Date;
@@ -40,107 +40,6 @@ interface FilterValues {
   status: string;
   gate: string[];
 }
-const renderStatus = (status: string) => {
-  let color, icon;
-
-  switch (status) {
-    case "Đã sử dụng":
-      return (
-        <Button
-          style={{
-            backgroundColor: "rgb(234, 241, 248)",
-            border: "1px solid rgb(145, 157, 186)",
-          }}
-        >
-          <div
-            style={{ display: "flex", alignItems: "center", color: "green" }}
-          >
-            <div
-              style={{
-                width: "10px",
-                height: "10px",
-                borderRadius: "50%",
-                backgroundColor: "green",
-                marginRight: "6px",
-              }}
-            />
-            {status}
-          </div>
-        </Button>
-      );
-    case "Chưa sử dụng":
-      return (
-        <Button
-          style={{
-            backgroundColor: "rgb(222, 246, 224)",
-            border: "1px solid green",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              color: "rgb(3, 172, 0)",
-            }}
-          >
-            <div
-              style={{
-                width: "10px",
-                height: "10px",
-                borderRadius: "50%",
-                backgroundColor: "rgb(3, 172, 0)",
-                marginRight: "6px",
-              }}
-            />
-            {status}
-          </div>
-        </Button>
-      );
-    case "Ngưng sử dụng":
-      return (
-        <Button
-          style={{
-            backgroundColor: "rgb(248, 235, 232)",
-            border: "1px solid red",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", color: "red" }}>
-            <div
-              style={{
-                width: "10px",
-                height: "10px",
-                borderRadius: "50%",
-                backgroundColor: "red",
-                marginRight: "6px",
-              }}
-            />
-            {/* {status} */}
-            {"Hết hạn"}
-          </div>
-        </Button>
-      );
-    default:
-      color = "";
-      icon = null;
-  }
-
-  return (
-    <Button>
-      <div style={{ display: "flex", alignItems: "center" }}>
-        <div
-          style={{
-            width: "10px",
-            height: "10px",
-            borderRadius: "50%",
-            backgroundColor: color,
-            marginRight: "6px",
-          }}
-        />
-        {icon}
-      </div>
-    </Button>
-  );
-};
 
 const TicketCheckPage = () => {
   const [filteredTickets, setFilteredTickets] = useState<DataType[]>([]);
@@ -148,8 +47,8 @@ const TicketCheckPage = () => {
 
   useEffect(() => {
     axios
-    
-      .get("http://localhost:8000/api/ticketpakage")
+
+      .get("http://localhost:8000/api/ticket")
       .then(response => {
         const responseData = response.data;
 
@@ -205,69 +104,12 @@ const TicketCheckPage = () => {
     setFilteredTickets(filteredData);
   };
 
-  //render
-
-  const renderActionIcon = (record: DataType) => {
-    if (!record.NgaySuDung) {
-      const menu = (
-        <Menu style={{ backgroundColor: "orange", textAlign: "center" }}>
-          <Menu.Item style={{ backgroundColor: "orange" }}>
-            <Button
-              style={{
-                border: "none",
-                padding: 0,
-                display: "block",
-                backgroundColor: "orange",
-                color: "black",
-              }}
-            >
-              Sử dụng vé
-            </Button>
-            <Button
-              onClick={() => {}}
-              style={{
-                border: "none",
-                padding: 0,
-                backgroundColor: "orange",
-                color: "black",
-              }}
-            >
-              Đổi ngày sử dụng
-            </Button>
-          </Menu.Item>
-        </Menu>
-      );
-
-      return (
-        <Dropdown overlay={menu} trigger={["click"]}>
-          <Button style={{ border: "none", padding: 0 }}>
-            <EllipsisOutlined style={{ transform: "rotate(90deg)" }} />
-          </Button>
-        </Dropdown>
-      );
-    }
-
-    return null;
-  };
-  const actionColumn = {
-    title: "",
-    dataIndex: "actions",
-    key: "action",
-
-    render: (_: any, record: DataType) => renderActionIcon(record),
-  };
-
   //cột
   const columns = [
     {
       title: "STT",
       dataIndex: "id",
       key: "id",
-    },
-    {
-      title: "Booking code",
-      dataIndex: "BookingCode",
-      key: "BookingCode",
     },
     {
       title: "Số vé",
@@ -279,29 +121,23 @@ const TicketCheckPage = () => {
       dataIndex: "TenSuKien",
       key: "TenSuKien",
     },
-    {
-      title: "Tình trạng sử dụng",
-      dataIndex: "TinhTrangSuDung",
-      key: "TinhTrangSuDung",
-      render: (status: string) => renderStatus(status),
-    },
+
     {
       title: "Ngày Sử dụng",
       dataIndex: "NgaySuDung",
       key: "NgaySuDung",
     },
-    {
-      title: "Ngày xuất vé",
-      dataIndex: "NgayXuatVe",
-      key: "NgayXuatVe",
-    },
+
     {
       title: "Cổng check in",
       dataIndex: "CongCheckIn",
       key: "CongCheckIn",
     },
-
-    actionColumn,
+    {
+      title: "",
+      dataIndex: "DoiSoat",
+      key: "DoiSoat",
+    },
   ];
 
   return (
@@ -339,6 +175,9 @@ const TicketCheckPage = () => {
                 placeholder="Tìm bằng số vé"
                 enterButton={<SearchOutlined />}
               ></Input.Search>
+              <Button style={{ background: "orange", color: "white" }}>
+                Chốt đối soát
+              </Button>
             </div>
             <div className="table">
               <Table
