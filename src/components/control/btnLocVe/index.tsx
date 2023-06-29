@@ -1,27 +1,48 @@
 import React, { useState } from "react";
-import { Button, Checkbox, DatePicker, Radio } from "antd";
+import { Button, Checkbox, Col, Row, Radio } from "antd";
+import BtnDatePicker from "../btnDate";
+
 
 interface PopupProps {
   visible: boolean;
   onClose: () => void;
   onFilter: (values: any) => void;
 }
-const options = [
-  { label: "Tất cả", value: 1 },
-  { label: "Đã sử dụng", value: 2 },
-  { label: "Chưa sử dụng", value: 3 },
-  { label: "Hết hạn", value: 4 },
-];
+interface FilterValues {
+  fromDate: Date | null;
+  toDate: Date | null;
+  status: string[];
+  gate: string[];
+}
+
 const PopupLocVe: React.FC<PopupProps> = ({ visible, onClose, onFilter }) => {
-  const getPopupContainer = (node: HTMLElement) => node;
-  const [filterValues, setFilterValues] = useState({
+  const [filterValues, setFilterValues] = useState<FilterValues>({
     fromDate: null,
     toDate: null,
-    status: "",
+    status: [],
     gate: [],
   });
   const handleFilter = () => {
     onFilter(filterValues);
+    onClose();
+  };
+  const handleStatusChangeCheckbox = (checkedValues: any) => {
+    const updatedStatus = checkedValues as string[];
+
+    // Nếu checkbox có giá trị là 1 được chọn
+    if (updatedStatus.includes("1")) {
+      // Tắt (disable) các checkbox còn lại
+      setFilterValues(prevValues => ({
+        ...prevValues,
+        status: updatedStatus,
+      }));
+    } else {
+      // Nếu không, cập nhật giá trị của checkbox
+      setFilterValues(prevValues => ({
+        ...prevValues,
+        status: updatedStatus,
+      }));
+    }
   };
 
   return (
@@ -43,8 +64,7 @@ const PopupLocVe: React.FC<PopupProps> = ({ visible, onClose, onFilter }) => {
         style={{
           background: "white",
           padding: "24px 29px 20px 32px",
-          width: "634px",
-          height: "454px",
+
           borderRadius: "16px",
           alignItems: "center",
           textAlign: "center",
@@ -60,18 +80,17 @@ const PopupLocVe: React.FC<PopupProps> = ({ visible, onClose, onFilter }) => {
         >
           <div>
             <h4>Từ ngày</h4>
-            <DatePicker getPopupContainer={getPopupContainer} />
+            <BtnDatePicker />
           </div>
           <div>
             <h4>Đến ngày</h4>
-            <DatePicker getPopupContainer={getPopupContainer} />
+            <BtnDatePicker />
           </div>
         </div>
         <div>
           <h4 style={{ textAlign: "left" }}>Tình trạng sử dụng</h4>
           <div>
             <Radio.Group
-              options={options}
               style={{ display: "flex", justifyContent: "space-between" }}
             >
               <Radio value={1}>Tất cả</Radio>
@@ -83,24 +102,72 @@ const PopupLocVe: React.FC<PopupProps> = ({ visible, onClose, onFilter }) => {
         </div>
         <div style={{ textAlign: "center", alignItems: "center" }}>
           <h4 style={{ textAlign: "left" }}>Cổng check-in</h4>
-          <div>
+          <div id="checkboxgroup">
             <Checkbox.Group
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                justifyContent: "space-around",
-              }}
+              style={{ width: "100%" }}
+              onChange={handleStatusChangeCheckbox}
+              value={filterValues.status}
             >
-              <Checkbox style={{ flexBasis: "25%" }}>Tất cả</Checkbox>
-              <Checkbox style={{ flexBasis: "25%" }}>Cổng 1</Checkbox>
-              <Checkbox style={{ flexBasis: "25%" }}>Cổng 2</Checkbox>
-              <Checkbox style={{ flexBasis: "25%" }}>Cổng 3</Checkbox>
-              <Checkbox style={{ flexBasis: "25%" }}>Cổng 4</Checkbox>
-              <Checkbox style={{ flexBasis: "25%" }}>Cổng 5</Checkbox>
+              <Row>
+                <Col span={8}>
+                  <Checkbox value="1">Tất cả</Checkbox>
+                </Col>
+                <Col span={8}>
+                  <Checkbox
+                    value="2"
+                    disabled={filterValues.status.includes("1")}
+                  >
+                    Cổng 1
+                  </Checkbox>
+                </Col>
+                <Col span={8}>
+                  <Checkbox
+                    value="3"
+                    disabled={filterValues.status.includes("1")}
+                  >
+                    Cổng 2
+                  </Checkbox>
+                </Col>
+                <Col span={8}>
+                  <Checkbox
+                    value="4"
+                    disabled={filterValues.status.includes("1")}
+                  >
+                    Cổng 3
+                  </Checkbox>
+                </Col>
+                <Col span={8}>
+                  <Checkbox
+                    value="5"
+                    disabled={filterValues.status.includes("1")}
+                  >
+                    Cổng 4
+                  </Checkbox>
+                </Col>
+                <Col span={8}>
+                  <Checkbox
+                    value="6"
+                    disabled={filterValues.status.includes("1")}
+                  >
+                    Cổng 5
+                  </Checkbox>
+                </Col>
+              </Row>
             </Checkbox.Group>
           </div>
         </div>
-        <Button style={{ textAlign: "center" }} onClick={handleFilter}>
+        <Button
+          style={{
+            textAlign: "center",
+            marginTop: "20px",
+            width: "160px",
+            height: "48px",
+            border: "1px solid orange",
+            color: "orange",
+            gap: "10px",
+          }}
+          onClick={handleFilter}
+        >
           Lọc
         </Button>
       </div>

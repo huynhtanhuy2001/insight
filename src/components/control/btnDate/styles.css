@@ -47,3 +47,24 @@
   color: white;
   border: none;
 }
+:where(.css-dev-only-do-not-override-12jzuas).ant-picker-dropdown
+  .ant-picker-week-panel
+  .ant-picker-body {
+  padding-top: 40px !important;
+}
+:where(.css-dev-only-do-not-override-12jzuas).ant-picker-dropdown
+  .ant-picker-week-panel-row-range-start
+  td.ant-picker-cell:before,
+:where(.css-dev-only-do-not-override-12jzuas).ant-picker-dropdown
+  .ant-picker-week-panel-row-range-end
+  td.ant-picker-cell:before,
+:where(.css-dev-only-do-not-override-12jzuas).ant-picker-dropdown
+  .ant-picker-week-panel-row-selected
+  td.ant-picker-cell:before {
+  background-color: orange;
+}
+:where(.css-dev-only-do-not-override-12jzuas).ant-picker-dropdown
+  .ant-picker-content
+  th {
+  color: orange;
+}

@@ -254,19 +254,46 @@ const ServicePackPage = () => {
           }}
         >
           <h2>Danh sách gói vé</h2>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              paddingBottom: "20px",
+            }}
+          >
             <Input.Search
               style={{ width: "300px" }}
               placeholder="Tìm bằng số vé"
               enterButton={<SearchOutlined />}
             ></Input.Search>
             <div>
-              <Button>
-                <FilterOutlined />
-                Lọc vé
+              <Button
+                style={{
+                  textAlign: "center",
+                  height: "48px",
+                  width: "127px",
+                  border: "1px solid orange",
+                  color: "orange",
+                  gap: "10px",
+                  marginLeft: "10px",
+                }}
+              >
+                Xuất file (.CSV)
               </Button>
-
-              <Button>Xuất file</Button>
+              <Button
+                style={{
+                  textAlign: "center",
+                  height: "48px",
+                  width: "127px",
+                  border: "1px solid orange",
+                  color: "white",
+                  backgroundColor: "orange",
+                  gap: "10px",
+                  marginLeft: "10px",
+                }}
+              >
+                Thêm gói vé
+              </Button>
             </div>
           </div>
           <div className="table">

@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import "dayjs/locale/vi";
 import vi from "antd/es/date-picker/locale/vi_VN";
@@ -8,8 +8,8 @@ import { CalendarOutlined } from "@ant-design/icons";
 
 import "./styles.css";
 const BtnDatePicker: React.FC = () => {
-  const [pickerType, setPickerType] = useState("date");
-
+  const [pickerType, setPickerType] = useState<"date" | "week">("date");
+  const getPopupContainer = (node: HTMLElement) => node;
   const onChange: DatePickerProps["onChange"] = (date, dateString) => {
     console.log(date, dateString);
   };
@@ -45,13 +45,14 @@ const BtnDatePicker: React.FC = () => {
     <Space direction="vertical">
       <div className="date-picker-wrapper">
         <DatePicker
-          picker="date"
+        getPopupContainer={getPopupContainer}
+          picker={pickerType === "date" ? "date" : "week"}
           locale={vi}
-          format={"MMMM, YYYY"}
+          format={pickerType === "date" ? "MMMM, YYYY" : "wo"}
           renderExtraFooter={renderExtraFooter}
           onChange={onChange}
           suffixIcon={<CalendarOutlined className="custom-icon" />}
-          showToday={false}
+          showToday={pickerType === "date" ? false : true}
           defaultValue={dayjs()}
         />
       </div>

@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "@reduxjs/toolkit": "^1.9.5",
     "@svgr/cli": "^8.0.1",
     "@testing-library/jest-dom": "^5.14.1",
@@ -24,6 +25,7 @@
     "dotenv": "^16.3.0",
     "express": "^4.18.2",
     "firebase": "^9.22.2",
+    "fontawesome": "^5.6.3",
     "ibm_db": "^3.2.1",
     "moment": "^2.29.4",
     "mysql": "^2.18.1",

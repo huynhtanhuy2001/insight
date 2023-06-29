@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import { Button, DatePicker, Table } from "antd";
 
 interface BtnDoiNgayProps {
+  visibles: boolean;
   ticketId: number;
   selectedTicket: DataType | null;
   onClose: () => void;
+
 }
 
 interface DataType {
@@ -21,14 +22,15 @@ interface DataType {
 }
 
 const PopupDoiNgay: React.FC<BtnDoiNgayProps> = ({
+  visibles,
   selectedTicket,
   ticketId,
-  onClose
+  onClose,
+
 }) => {
-  const handleCancel = () => {
-    // Gọi onClose để đóng popup
+  const handleFilter = () => {
+ 
     onClose();
-    
   };
   return (
     <div>
@@ -42,8 +44,24 @@ const PopupDoiNgay: React.FC<BtnDoiNgayProps> = ({
             <DatePicker />
           </p>
           <div style={{ display: "flex", justifyContent: "space-around" }}>
-            <Button   onClick={handleCancel}>Hủy</Button>
-            <Button>Lưu</Button>
+            <Button  style={{
+                  textAlign: "center",
+                  height: "48px",
+                  width: "127px",
+
+                  border: "1px solid orange",
+                  color: "orange",
+                  gap: "10px",
+                }} onClick={handleFilter}>Hủy</Button>
+            <Button  style={{
+                  textAlign: "center",
+                  height: "48px",
+                  width: "127px",
+                  backgroundColor:"orange",
+                  border: "1px solid orange",
+                  color: "white",
+                  gap: "10px",
+                }}>Lưu</Button>
           </div>
         </div>
       ) : (

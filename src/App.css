@@ -3,7 +3,9 @@
   background-color: #e5e5e5;
   padding: 17px 33px;
 }
-
+:where(.css-dev-only-do-not-override-12jzuas).ant-col-8 {
+  text-align: left;
+}
 :where(.css-dev-only-do-not-override-12jzuas).ant-menu-light
   .ant-menu-submenu-selected
   > .ant-menu-submenu-title,
@@ -48,4 +50,22 @@
 
 .ant-pagination-item-link .anticon svg {
   color: orange;
+}
+:where(.css-dev-only-do-not-override-12jzuas).ant-btn-primary {
+  background-color: #f7f7f8;
+  color: black;
+}
+
+:where(.css-dev-only-do-not-override-12jzuas).ant-input-search
+  > .ant-input-group
+  > .ant-input-group-addon:last-child
+  .ant-input-search-button,
+:where(.css-dev-only-do-not-override-12jzuas).ant-input-group
+  > .ant-input:first-child,
+:where(.css-dev-only-do-not-override-12jzuas).ant-input-group
+  .ant-input-group-addon:first-child {
+  background-color: #f7f7f8;
+  color: black;
+  height: 48px;
+  margin-bottom: 10px;
 }

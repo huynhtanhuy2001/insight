@@ -1,9 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Menu } from "antd";
-import { SettingOutlined, HomeOutlined, BarsOutlined } from "@ant-design/icons";
+import {
+  SettingOutlined,
+  HomeOutlined,
+  BarsOutlined,
+  ContainerOutlined,
+  LaptopOutlined,
+  BoxPlotOutlined,
+} from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import Logo from "../../../assets/image/logo.svg";
+
 import "./styles.css";
+
 const { SubMenu } = Menu;
 
 const SiderMenu = () => {
@@ -30,16 +39,16 @@ const SiderMenu = () => {
           <Menu.Item key="/home" icon={<HomeOutlined />}>
             <Link to="/home">Trang chủ</Link>
           </Menu.Item>
-          <Menu.Item key="/ticketmanagement" icon={<BarsOutlined />}>
+          <Menu.Item key="/ticketmanagement" icon={<BoxPlotOutlined />}>
             <Link to="/ticketmanagement">Quản lý vé</Link>
           </Menu.Item>
-          <Menu.Item key="/ticketcheck" icon={<SettingOutlined />}>
+          <Menu.Item key="/ticketcheck" icon={<ContainerOutlined />}>
             <Link to="/ticketcheck">Đối soát vé</Link>
           </Menu.Item>
           <Menu.Item key="/events" icon={<BarsOutlined />}>
             <Link to="/events">Danh sách sự kiện</Link>
           </Menu.Item>
-          <Menu.Item key="/equipment" icon={<SettingOutlined />}>
+          <Menu.Item key="/equipment" icon={<LaptopOutlined />}>
             <Link to="/equipment">Quản lý thiết bị</Link>
           </Menu.Item>
           <SubMenu key="sub1" icon={<SettingOutlined />} title="Cài đặt">

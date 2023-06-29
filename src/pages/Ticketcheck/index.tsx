@@ -172,13 +172,29 @@ const TicketCheckPage = () => {
             }}
           >
             <h2>Danh sách vé</h2>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                paddingBottom: "20px",
+              }}
+            >
               <Input.Search
                 style={{ width: "300px" }}
                 placeholder="Tìm bằng số vé"
                 enterButton={<SearchOutlined />}
               ></Input.Search>
-              <Button style={{ background: "orange", color: "white" }}>
+              <Button
+                style={{
+                  textAlign: "center",
+                  height: "48px",
+                  width: "127px",
+                  backgroundColor: "orange",
+                  border: "1px solid orange",
+                  color: "white",
+                  gap: "10px",
+                }}
+              >
                 Chốt đối soát
               </Button>
             </div>
@@ -248,7 +264,20 @@ const TicketCheckPage = () => {
               <BtnDatePicker />
             </div>
             <div style={{ textAlign: "center" }}>
-              <Button>Lọc</Button>
+            <Button
+          style={{
+            textAlign: "center",
+            marginTop: "20px",
+            width: "160px",
+            height: "48px",
+            border: "1px solid orange",
+            color: "orange",
+            gap: "10px",
+          }}
+       
+        >
+          Lọc
+        </Button>
             </div>
           </div>
         </div>

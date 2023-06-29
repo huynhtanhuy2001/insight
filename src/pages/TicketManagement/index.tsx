@@ -23,6 +23,7 @@ interface DataType {
   NgayXuatVe: string;
   CongCheckIn: string;
   TenLoaiVe: string;
+
 }
 interface FilterValues {
   fromDate: Date;
@@ -135,12 +136,11 @@ const renderStatus = (status: string) => {
 const TicketManagementPage = () => {
   const [locVePopupVisible, setLocVePopupVisible] = useState(false);
   const [doiNgayPopupVisible, setDoiNgayPopupVisible] = useState(false);
-  const [popupVisible, setPopupVisible] = useState(false);
+  // const [popupVisible, setPopupVisible] = useState(false);
   const [filteredTickets, setFilteredTickets] = useState<DataType[]>([]);
   const [tickets, setTickets] = useState<DataType[]>([]);
   const [selectedTicket, setSelectedTicket] = useState<DataType | null>(null);
   const [isPopupDoiNgayVisible, setIsPopupDoiNgayVisible] = useState(false);
-
   useEffect(() => {
     axios
       .get("http://localhost:8000/api/ticket")
@@ -154,7 +154,9 @@ const TicketManagementPage = () => {
       });
   }, []);
   const closePopup = () => {
-    setPopupVisible(false);
+    // setPopupVisible(false);
+    setLocVePopupVisible(false);
+    setIsPopupDoiNgayVisible(false);
   };
 
   const paginationConfig = {
@@ -206,17 +208,16 @@ const TicketManagementPage = () => {
 
     // Đóng popup
     closePopup();
+ 
   };
   const showPopupDoiNgay = (record: DataType) => {
-    setSelectedTicket(record);
+    setSelectedTicket(record) ;
     setIsPopupDoiNgayVisible(true);
   };
   const showPopupLocVe = () => {
     setLocVePopupVisible(true);
   };
-  const closePopupDoiNgay = () => {
-    setIsPopupDoiNgayVisible(false);
-  };
+ 
 
   //render
 
@@ -343,14 +344,31 @@ const TicketManagementPage = () => {
           }}
         >
           <h2>Danh sách vé</h2>
-          <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              paddingBottom: "20px",
+            }}
+          >
             <Input.Search
               style={{ width: "300px" }}
               placeholder="Tìm bằng số vé"
               enterButton={<SearchOutlined />}
             ></Input.Search>
-            <div>
-              <Button onClick={showPopupLocVe}>
+            <div style={{ display: "flex" }}>
+              <Button
+                style={{
+                  textAlign: "center",
+                  height: "48px",
+                  width: "127px",
+
+                  border: "1px solid orange",
+                  color: "orange",
+                  gap: "10px",
+                }}
+                onClick={showPopupLocVe}
+              >
                 <FilterOutlined />
                 Lọc vé
               </Button>
@@ -360,7 +378,19 @@ const TicketManagementPage = () => {
                 onFilter={handleFilter}
               />
 
-              <Button>Xuất file</Button>
+              <Button
+                style={{
+                  textAlign: "center",
+                  height: "48px",
+                  width: "127px",
+                  border: "1px solid orange",
+                  color: "orange",
+                  gap: "10px",
+                  marginLeft: "10px",
+                }}
+              >
+                Xuất file (.CSV)
+              </Button>
             </div>
           </div>
           <div className="table">
@@ -373,12 +403,13 @@ const TicketManagementPage = () => {
             />
             <Modal
               title="Đổi ngày sử dụng"
-              visible={doiNgayPopupVisible}
+              visible={isPopupDoiNgayVisible}
               footer={null}
             >
               {doiNgayPopupVisible && selectedTicket && (
                 <PopupDoiNgay
-                  onClose={closePopupDoiNgay}
+                visibles={isPopupDoiNgayVisible}
+                  onClose={closePopup}
                   selectedTicket={selectedTicket}
                   ticketId={selectedTicket?.id}
                 />
