@@ -2,16 +2,13 @@ import React, { useEffect, useState } from "react";
 import SiderMenu from "../../components/common/Menu";
 import SearchComponent from "../../components/control/search/search";
 import AccNotiMail from "../../components/control/header/Accnotimail/AccNotiMail";
-import { Button, Input, Table, Dropdown, Menu, Modal } from "antd";
+import { Button, Input, Table, Modal } from "antd";
 import PopupUpdate from "../../components/control/btnUpdateVe/index";
 
-import {
-  SearchOutlined,
-  FilterOutlined,
-  FormOutlined,
-} from "@ant-design/icons";
+import { SearchOutlined, FormOutlined } from "@ant-design/icons";
 import axios from "axios";
 import moment from "moment";
+import PopupAddVe from "../../components/control/btnAddGoiVe";
 interface DataType {
   id: number;
   PackageCode: string;
@@ -112,6 +109,7 @@ const ServicePackPage = () => {
   const [tickets, setTickets] = useState<DataType[]>([]);
   const [selectedTicket, setSelectedTicket] = useState<DataType | null>(null);
   const [showPopupUpdate, setShowPopupUpdate] = useState(false);
+  const [showPopupAddve, setShowPopupAddVe] = useState(false);
 
   useEffect(() => {
     axios
@@ -125,11 +123,20 @@ const ServicePackPage = () => {
         console.log(error);
       });
   }, []);
+  const handleShowPopupAddVe = (record: DataType) => {
+    setShowPopupAddVe(true);
+     setSelectedTicket(record);
+  };
   const handleShowPopupUpdate = (record: DataType) => {
-    setSelectedTicket(record);
     setShowPopupUpdate(true);
+    setSelectedTicket(record);
+
   };
 
+  const handlePopupUpdateClose = () => {
+    setShowPopupUpdate(false);
+    setShowPopupAddVe(false);
+  };
   const paginationConfig = {
     pageSize: 12,
     total: 240,
@@ -237,7 +244,6 @@ const ServicePackPage = () => {
     },
     actionColumn,
   ];
-  console.log(selectedTicket);
 
   return (
     <div className="MainApp">
@@ -298,9 +304,23 @@ const ServicePackPage = () => {
                   gap: "10px",
                   marginLeft: "10px",
                 }}
+                onClick={() => setShowPopupAddVe(true)}
               >
                 Thêm gói vé
               </Button>
+              {showPopupAddve && (
+              <Modal
+                visible={showPopupAddve}
+                onCancel={handlePopupUpdateClose}
+                footer={null}
+              >
+                <PopupAddVe
+              
+                  onClose={handlePopupUpdateClose}
+                  selectedTicket={selectedTicket}
+                />
+              </Modal>
+            )}
             </div>
           </div>
           <div className="table">
@@ -312,11 +332,18 @@ const ServicePackPage = () => {
               pagination={paginationConfig}
             />
             {showPopupUpdate && selectedTicket && (
-              <PopupUpdate
-                record={selectedTicket}
-                onClose={() => setShowPopupUpdate(false)}
-                selectedTicket={selectedTicket}
-              />
+              <Modal
+                visible={showPopupUpdate}
+                onCancel={handlePopupUpdateClose}
+                footer={null}
+              >
+                <PopupUpdate
+                  record={selectedTicket}
+                  onClose={handlePopupUpdateClose}
+                  selectedTicket={selectedTicket}
+                  
+                />
+              </Modal>
             )}
           </div>
         </div>

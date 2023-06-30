@@ -1,14 +1,5 @@
-import React, { useState, useEffect } from "react";
-import {
-  Button,
-  Checkbox,
-  DatePicker,
-  Dropdown,
-  Input,
-  Space,
-  Table,
-  TimePicker,
-} from "antd";
+import React from "react";
+import { Button, Checkbox, Dropdown, Input, Space, TimePicker } from "antd";
 import { DownOutlined, UserOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 
@@ -20,6 +11,7 @@ interface BtnUpdateProps {
   selectedTicket: DataType | null;
   record: DataType | null;
   onClose: () => void;
+
 }
 
 interface DataType {
@@ -68,7 +60,7 @@ const PopupUpdate: React.FC<BtnUpdateProps> = ({ record, onClose }) => {
     <div>
       {record ? (
         <div>
-          <h3>Thêm gói vé</h3>
+          <h2>Cập nhật gói vé</h2>
           <h4>Tên gói vé *</h4>
           <Input
             style={{ width: "367px" }}
@@ -76,19 +68,27 @@ const PopupUpdate: React.FC<BtnUpdateProps> = ({ record, onClose }) => {
             // value={record.PackageName}
           />
           <div style={{ display: "flex", justifyContent: "space-around" }}>
-            <div style={{ display: "block" }}>
+            <div style={{ display: "block", width: "100%" }}>
               <h4>Ngày áp dụng</h4>
               <BtnDatePicker />
               <TimePicker
-                style={{ border: "1px solid orange", marginLeft: "10px" }}
+                style={{
+                  border: "1px solid orange",
+                  marginLeft: "10px",
+                  width: "137px",
+                }}
                 defaultValue={dayjs("", "HH:mm:ss")}
               />
             </div>
-            <div style={{ display: "block" }}>
+            <div style={{ display: "block", width: "100%" }}>
               <h4>Ngày hết hạn</h4>
               <BtnDatePicker />
               <TimePicker
-                style={{ border: "1px solid orange", marginLeft: "10px" }}
+                style={{
+                  border: "1px solid orange",
+                  marginLeft: "10px",
+                  width: "137px",
+                }}
                 defaultValue={dayjs("", "HH:mm:ss")}
               />
             </div>
@@ -119,10 +119,7 @@ const PopupUpdate: React.FC<BtnUpdateProps> = ({ record, onClose }) => {
               </Dropdown>
             </div>
           </div>
-          <p>{record?.PackageCode}</p>
-          <p>
-            <DatePicker />
-          </p>
+
           <p>* là thông tin bắt buộc</p>
           <div style={{ display: "flex", justifyContent: "space-around" }}>
             <Button

@@ -69,3 +69,6 @@
   height: 48px;
   margin-bottom: 10px;
 }
+:where(.css-dev-only-do-not-override-12jzuas).ant-modal .ant-modal-content {
+  width: 760px;
+}

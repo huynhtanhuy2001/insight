@@ -42,7 +42,7 @@ const BtnDatePicker: React.FC = () => {
   );
 
   return (
-    <Space direction="vertical">
+    <Space style={{ width: "137px",}} direction="vertical">
       <div className="date-picker-wrapper">
         <DatePicker
         getPopupContainer={getPopupContainer}
