@@ -3,6 +3,7 @@ import SiderMenu from "../../components/common/Menu";
 import SearchComponent from "../../components/control/search/search";
 import AccNotiMail from "../../components/control/header/Accnotimail/AccNotiMail";
 import { Button, Input, Table, Dropdown, Menu, Modal } from "antd";
+import PopupUpdate from "../../components/control/btnUpdateVe/index";
 
 import {
   SearchOutlined,
@@ -110,6 +111,7 @@ const ServicePackPage = () => {
   const [filteredTickets, setFilteredTickets] = useState<DataType[]>([]);
   const [tickets, setTickets] = useState<DataType[]>([]);
   const [selectedTicket, setSelectedTicket] = useState<DataType | null>(null);
+  const [showPopupUpdate, setShowPopupUpdate] = useState(false);
 
   useEffect(() => {
     axios
@@ -123,6 +125,11 @@ const ServicePackPage = () => {
         console.log(error);
       });
   }, []);
+  const handleShowPopupUpdate = (record: DataType) => {
+    setSelectedTicket(record);
+    setShowPopupUpdate(true);
+  };
+  
 
   const paginationConfig = {
     pageSize: 12,
@@ -139,9 +146,11 @@ const ServicePackPage = () => {
           border: "none",
           color: "orange",
         }}
+        onClick={() => handleShowPopupUpdate(record)}
       >
         <FormOutlined style={{ marginRight: "5px" }} />
         <p style={{ margin: "0" }}>Cập nhật</p>
+        
       </Button>
     );
   };
@@ -304,6 +313,16 @@ const ServicePackPage = () => {
               }
               pagination={paginationConfig}
             />
+        {showPopupUpdate && selectedTicket && (
+  <PopupUpdate
+  
+    record={selectedTicket}
+    onClose={() => setShowPopupUpdate(false)}
+    selectedTicket={selectedTicket}
+  />
+)}
+
+
           </div>
         </div>
       </div>
