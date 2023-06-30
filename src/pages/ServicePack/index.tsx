@@ -129,7 +129,6 @@ const ServicePackPage = () => {
     setSelectedTicket(record);
     setShowPopupUpdate(true);
   };
-  
 
   const paginationConfig = {
     pageSize: 12,
@@ -150,7 +149,6 @@ const ServicePackPage = () => {
       >
         <FormOutlined style={{ marginRight: "5px" }} />
         <p style={{ margin: "0" }}>Cập nhật</p>
-        
       </Button>
     );
   };
@@ -313,16 +311,13 @@ const ServicePackPage = () => {
               }
               pagination={paginationConfig}
             />
-        {showPopupUpdate && selectedTicket && (
-  <PopupUpdate
-  
-    record={selectedTicket}
-    onClose={() => setShowPopupUpdate(false)}
-    selectedTicket={selectedTicket}
-  />
-)}
-
-
+            {showPopupUpdate && selectedTicket && (
+              <PopupUpdate
+                record={selectedTicket}
+                onClose={() => setShowPopupUpdate(false)}
+                selectedTicket={selectedTicket}
+              />
+            )}
           </div>
         </div>
       </div>
