@@ -23,6 +23,11 @@ import axios from "axios";
 import moment from "moment";
 import PopupDoiNgay from "../../components/control/btnDoiNgay/index";
 import BtnDatePicker from "../../components/control/btnDate";
+import { fetchTickets } from '../../redux/action/actionApiTicket';
+import { useDispatch, useSelector } from 'react-redux';
+import { ThunkDispatch } from 'redux-thunk';
+import { AnyAction } from 'redux';
+ import { RootState } from "../../redux/store";
 interface DataType {
   id: number;
   BookingCode: string;
@@ -43,22 +48,13 @@ interface FilterValues {
 
 const TicketCheckPage = () => {
   const [filteredTickets, setFilteredTickets] = useState<DataType[]>([]);
-  const [tickets, setTickets] = useState<DataType[]>([]);
-
+  const dispatch: ThunkDispatch<RootState, any, AnyAction> = useDispatch();
+  const tickets = useSelector((state: RootState) => state.reducerApiTicket.tickets);
   useEffect(() => {
-    axios
-
-      .get("http://localhost:8000/api/ticket")
-      .then(response => {
-        const responseData = response.data;
-
-        setTickets(responseData);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }, []);
-
+    dispatch(fetchTickets());
+    setFilteredTickets(tickets);
+  }, [dispatch, tickets]);
+  
   const paginationConfig = {
     pageSize: 12,
     total: 240,
@@ -75,7 +71,7 @@ const TicketCheckPage = () => {
       const formattedFromDate = moment(fromDate).format("YYYY-MM-DD");
 
       filteredData = filteredData.filter(
-        ticket =>
+        (ticket: DataType) =>
           moment(ticket.NgaySuDung).format("YYYY-MM-DD") >= formattedFromDate
       );
     }
@@ -84,21 +80,21 @@ const TicketCheckPage = () => {
       const formattedToDate = moment(toDate).format("YYYY-MM-DD");
 
       filteredData = filteredData.filter(
-        ticket =>
+        (ticket: DataType) =>
           moment(ticket.NgaySuDung).format("YYYY-MM-DD") <= formattedToDate
       );
     }
 
     if (status) {
       filteredData = filteredData.filter(
-        ticket => ticket.TinhTrangSuDung === status
+        (ticket: DataType) => ticket.TinhTrangSuDung === status
       );
     }
 
     if (gate && gate.includes("all")) {
-      filteredData = filteredData.filter(ticket => ticket.CongCheckIn !== "");
+      filteredData = filteredData.filter((ticket: DataType) => ticket.CongCheckIn !== "");
     } else if (gate && gate.length > 0) {
-      filteredData = filteredData.filter(ticket =>
+      filteredData = filteredData.filter((ticket: DataType) =>
         gate.includes(ticket.CongCheckIn)
       );
     }

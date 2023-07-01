@@ -4,11 +4,14 @@ import SearchComponent from "../../components/control/search/search";
 import AccNotiMail from "../../components/control/header/Accnotimail/AccNotiMail";
 import { Button, Input, Table, Modal } from "antd";
 import PopupUpdate from "../../components/control/btnUpdateVe/index";
-
 import { SearchOutlined, FormOutlined } from "@ant-design/icons";
-import axios from "axios";
 import moment from "moment";
 import PopupAddVe from "../../components/control/btnAddGoiVe";
+import { fetchTicketPakage } from '../../redux/action/actionApiTicketPakage';
+import { useDispatch, useSelector } from 'react-redux';
+import { ThunkDispatch } from 'redux-thunk';
+import { AnyAction } from 'redux';
+ import { RootState } from "../../redux/store";
 interface DataType {
   id: number;
   PackageCode: string;
@@ -106,23 +109,16 @@ const renderStatus = (status: string) => {
 
 const ServicePackPage = () => {
   const [filteredTickets, setFilteredTickets] = useState<DataType[]>([]);
-  const [tickets, setTickets] = useState<DataType[]>([]);
+  const dispatch: ThunkDispatch<RootState, any, AnyAction> = useDispatch();
+  const tickets = useSelector((state: RootState) => state.reducerApiTicket.tickets);
   const [selectedTicket, setSelectedTicket] = useState<DataType | null>(null);
   const [showPopupUpdate, setShowPopupUpdate] = useState(false);
   const [showPopupAddve, setShowPopupAddVe] = useState(false);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8000/api/ticketpakage")
-      .then(response => {
-        const responseData = response.data;
-
-        setTickets(responseData);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }, []);
+    dispatch(fetchTicketPakage());
+    setFilteredTickets(tickets);
+  }, [dispatch, tickets]);
   const handleShowPopupAddVe = (record: DataType) => {
     setShowPopupAddVe(true);
      setSelectedTicket(record);
@@ -168,7 +164,7 @@ const ServicePackPage = () => {
       const formattedFromDate = moment(fromDate).format("YYYY-MM-DD");
 
       filteredData = filteredData.filter(
-        ticket =>
+        (ticket: DataType) =>
           moment(ticket.ApplicableDate).format("YYYY-MM-DD") >=
           formattedFromDate
       );
@@ -178,13 +174,13 @@ const ServicePackPage = () => {
       const formattedToDate = moment(toDate).format("YYYY-MM-DD");
 
       filteredData = filteredData.filter(
-        ticket =>
+        (ticket: DataType) =>
           moment(ticket.ExpirationDate).format("YYYY-MM-DD") <= formattedToDate
       );
     }
 
     if (status) {
-      filteredData = filteredData.filter(ticket => ticket.TinhTrang === status);
+      filteredData = filteredData.filter( (ticket: DataType) => ticket.TinhTrang === status);
     }
 
     // Cập nhật dữ liệu đã lọc vào state

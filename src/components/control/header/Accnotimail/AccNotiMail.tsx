@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { storage } from '../../../../config/firebase';
-import { setAvatarImageUrl } from '../../../../slice/features/avatarSlice';
+import { setAvatarImageUrl } from '../../../../redux/slice/avatarSlice';
 import { MailOutlined, BellOutlined } from "@ant-design/icons";
 import { Avatar } from "antd";
-import {RootState} from "../../../../slice/store";
+import {RootState} from "../../../../redux/store";
 import { ref,getDownloadURL } from 'firebase/storage';
 
 

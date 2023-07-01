@@ -3,14 +3,17 @@ import SiderMenu from "../../components/common/Menu";
 import SearchComponent from "../../components/control/search/search";
 import AccNotiMail from "../../components/control/header/Accnotimail/AccNotiMail";
 import { Button, Input, Table, Dropdown, Menu, Modal } from "antd";
-
+import { fetchTickets } from '../../redux/action/actionApiTicket';
+import { useDispatch, useSelector } from 'react-redux';
+import { ThunkDispatch } from 'redux-thunk';
+import { AnyAction } from 'redux';
+ import { RootState } from "../../redux/store";
 import {
   SearchOutlined,
   FilterOutlined,
   EllipsisOutlined,
 } from "@ant-design/icons";
 import PopupLocVe from "../../components/control/btnLocVe/index";
-import axios from "axios";
 import moment from "moment";
 import PopupDoiNgay from "../../components/control/btnDoiNgay/index";
 interface DataType {
@@ -136,23 +139,17 @@ const renderStatus = (status: string) => {
 const TicketManagementPage = () => {
   const [locVePopupVisible, setLocVePopupVisible] = useState(false);
   const [doiNgayPopupVisible, setDoiNgayPopupVisible] = useState(false);
-  // const [popupVisible, setPopupVisible] = useState(false);
   const [filteredTickets, setFilteredTickets] = useState<DataType[]>([]);
-  const [tickets, setTickets] = useState<DataType[]>([]);
   const [selectedTicket, setSelectedTicket] = useState<DataType | null>(null);
   const [isPopupDoiNgayVisible, setIsPopupDoiNgayVisible] = useState(false);
+  const dispatch: ThunkDispatch<RootState, any, AnyAction> = useDispatch();
+  const tickets = useSelector((state: RootState) => state.reducerApiTicket.tickets);
   useEffect(() => {
-    axios
-      .get("http://localhost:8000/api/ticket")
-      .then(response => {
-        const responseData = response.data;
+    dispatch(fetchTickets());
+    setFilteredTickets(tickets);
+  }, [dispatch, tickets]);
+  
 
-        setTickets(responseData);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  }, []);
   const closePopup = () => {
     // setPopupVisible(false);
     setLocVePopupVisible(false);
@@ -175,30 +172,34 @@ const TicketManagementPage = () => {
       const formattedFromDate = moment(fromDate).format("YYYY-MM-DD");
 
       filteredData = filteredData.filter(
-        ticket =>
+        (ticket: DataType) =>
           moment(ticket.NgaySuDung).format("YYYY-MM-DD") >= formattedFromDate
       );
+      
     }
 
     if (toDate) {
       const formattedToDate = moment(toDate).format("YYYY-MM-DD");
 
       filteredData = filteredData.filter(
-        ticket =>
+        (ticket: DataType) =>
           moment(ticket.NgaySuDung).format("YYYY-MM-DD") <= formattedToDate
       );
+      
     }
 
     if (status) {
       filteredData = filteredData.filter(
-        ticket => ticket.TinhTrangSuDung === status
+        (ticket: DataType) => ticket.TinhTrangSuDung === status
       );
+      
+      
     }
 
     if (gate && gate.includes("all")) {
-      filteredData = filteredData.filter(ticket => ticket.CongCheckIn !== "");
+      filteredData = filteredData.filter(  (ticket: DataType) => ticket.CongCheckIn !== "");
     } else if (gate && gate.length > 0) {
-      filteredData = filteredData.filter(ticket =>
+      filteredData = filteredData.filter(  (ticket: DataType) =>
         gate.includes(ticket.CongCheckIn)
       );
     }
