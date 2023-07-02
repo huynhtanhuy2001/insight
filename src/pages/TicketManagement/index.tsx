@@ -3,11 +3,11 @@ import SiderMenu from "../../components/common/Menu";
 import SearchComponent from "../../components/control/search/search";
 import AccNotiMail from "../../components/control/header/Accnotimail/AccNotiMail";
 import { Button, Input, Table, Dropdown, Menu, Modal } from "antd";
-import { fetchTickets } from '../../redux/action/actionApiTicket';
-import { useDispatch, useSelector } from 'react-redux';
-import { ThunkDispatch } from 'redux-thunk';
-import { AnyAction } from 'redux';
- import { RootState } from "../../redux/store";
+import { fetchTickets } from "../../redux/action/actionApiTicket";
+import { useDispatch, useSelector } from "react-redux";
+import { ThunkDispatch } from "redux-thunk";
+import { AnyAction } from "redux";
+import { RootState } from "../../redux/store";
 import {
   SearchOutlined,
   FilterOutlined,
@@ -26,7 +26,6 @@ interface DataType {
   NgayXuatVe: string;
   CongCheckIn: string;
   TenLoaiVe: string;
-
 }
 interface FilterValues {
   fromDate: Date;
@@ -143,12 +142,15 @@ const TicketManagementPage = () => {
   const [selectedTicket, setSelectedTicket] = useState<DataType | null>(null);
   const [isPopupDoiNgayVisible, setIsPopupDoiNgayVisible] = useState(false);
   const dispatch: ThunkDispatch<RootState, any, AnyAction> = useDispatch();
-  const tickets = useSelector((state: RootState) => state.reducerApiTicket.tickets);
+  const tickets = useSelector(
+    (state: RootState) => state.reducerApiTicket.tickets
+  );
+
+  const [tableData, setTableData] = useState<any[]>([]);
   useEffect(() => {
     dispatch(fetchTickets());
     setFilteredTickets(tickets);
   }, [dispatch, tickets]);
-  
 
   const closePopup = () => {
     // setPopupVisible(false);
@@ -160,13 +162,13 @@ const TicketManagementPage = () => {
     pageSize: 12,
     total: 240,
     current: 1,
-    showSizeChanger: false, // hide size changer
+    showSizeChanger: false,
   };
 
   const handleFilter = (values: FilterValues) => {
     const { fromDate, toDate, status, gate } = values;
 
-    let filteredData = tickets;
+    let filteredData = [...tickets];
 
     if (fromDate) {
       const formattedFromDate = moment(fromDate).format("YYYY-MM-DD");
@@ -175,7 +177,6 @@ const TicketManagementPage = () => {
         (ticket: DataType) =>
           moment(ticket.NgaySuDung).format("YYYY-MM-DD") >= formattedFromDate
       );
-      
     }
 
     if (toDate) {
@@ -185,40 +186,37 @@ const TicketManagementPage = () => {
         (ticket: DataType) =>
           moment(ticket.NgaySuDung).format("YYYY-MM-DD") <= formattedToDate
       );
-      
     }
 
     if (status) {
       filteredData = filteredData.filter(
         (ticket: DataType) => ticket.TinhTrangSuDung === status
       );
-      
-      
     }
 
     if (gate && gate.includes("all")) {
-      filteredData = filteredData.filter(  (ticket: DataType) => ticket.CongCheckIn !== "");
+      filteredData = filteredData.filter(
+        (ticket: DataType) => ticket.CongCheckIn !== ""
+      );
     } else if (gate && gate.length > 0) {
-      filteredData = filteredData.filter(  (ticket: DataType) =>
+      filteredData = filteredData.filter((ticket: DataType) =>
         gate.includes(ticket.CongCheckIn)
       );
     }
 
     // Cập nhật dữ liệu đã lọc vào state
     setFilteredTickets(filteredData);
-
+    setTableData(filteredData);
     // Đóng popup
     closePopup();
- 
   };
   const showPopupDoiNgay = (record: DataType) => {
-    setSelectedTicket(record) ;
+    setSelectedTicket(record);
     setIsPopupDoiNgayVisible(true);
   };
   const showPopupLocVe = () => {
     setLocVePopupVisible(true);
   };
- 
 
   //render
 
@@ -321,7 +319,6 @@ const TicketManagementPage = () => {
 
     actionColumn,
   ];
-  console.log(selectedTicket);
 
   return (
     <div className="MainApp">
@@ -377,6 +374,7 @@ const TicketManagementPage = () => {
                 visible={locVePopupVisible}
                 onClose={closePopup}
                 onFilter={handleFilter}
+                tableData={tableData}
               />
 
               <Button
@@ -409,7 +407,7 @@ const TicketManagementPage = () => {
             >
               {doiNgayPopupVisible && selectedTicket && (
                 <PopupDoiNgay
-                visibles={isPopupDoiNgayVisible}
+                  visibles={isPopupDoiNgayVisible}
                   onClose={closePopup}
                   selectedTicket={selectedTicket}
                   ticketId={selectedTicket?.id}

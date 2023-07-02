@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { Button, Checkbox, Col, Row, Radio } from "antd";
 import BtnDatePicker from "../btnDate";
 
-
 interface PopupProps {
   visible: boolean;
   onClose: () => void;
   onFilter: (values: any) => void;
+  tableData: any[];
 }
 interface FilterValues {
   fromDate: Date | null;
@@ -15,35 +15,70 @@ interface FilterValues {
   gate: string[];
 }
 
-const PopupLocVe: React.FC<PopupProps> = ({ visible, onClose, onFilter }) => {
+const PopupLocVe: React.FC<PopupProps> = ({
+  visible,
+  onClose,
+  onFilter,
+  tableData,
+}) => {
   const [filterValues, setFilterValues] = useState<FilterValues>({
     fromDate: null,
     toDate: null,
     status: [],
     gate: [],
   });
-  const handleFilter = () => {
-    onFilter(filterValues);
-    onClose();
-  };
+
   const handleStatusChangeCheckbox = (checkedValues: any) => {
     const updatedStatus = checkedValues as string[];
-
-    // Nếu checkbox có giá trị là 1 được chọn
+  
+    // Kiểm tra nếu checkbox "Tất cả" được chọn
     if (updatedStatus.includes("1")) {
-      // Tắt (disable) các checkbox còn lại
+      // Nếu có, sẽ cập nhật lại trạng thái của status thành chỉ chứa giá trị "1"
       setFilterValues(prevValues => ({
         ...prevValues,
-        status: updatedStatus,
+        status: ["1"],
       }));
     } else {
-      // Nếu không, cập nhật giá trị của checkbox
+      // Nếu không, cập nhật lại trạng thái của status theo các giá trị đã chọn
       setFilterValues(prevValues => ({
         ...prevValues,
         status: updatedStatus,
       }));
     }
+    console.log(updatedStatus)
   };
+  const handleFilter = () => {
+    const filteredData = tableData.filter(item => {
+      if (
+        filterValues.fromDate &&
+        filterValues.toDate &&
+        (item.date < filterValues.fromDate || item.date > filterValues.toDate)
+      ) {
+        return false;
+      }
+
+      if (
+        filterValues.status.length > 0 &&
+        !filterValues.status.includes(item.status.toString())
+      ) {
+        return false;
+      }
+
+      if (
+        filterValues.gate.length > 0 &&
+        !filterValues.gate.includes(item.gate.toString())
+      ) {
+        return false;
+      }
+
+      return true;
+    });
+
+    onFilter(filteredData);
+    onClose();
+  };
+
+
 
   return (
     <div

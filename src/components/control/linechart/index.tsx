@@ -7,7 +7,7 @@ const LineChart = () => {
     datasets: [
       {
         label: "",
-        data: [12, 3, 10, 15],
+        data: [140, 3, 10, 15, 12, 3, 10, 15],
         borderColor: "orange",
         fill: true,
         // backgroundColor: "linear-gradient(180deg, rgba(250, 160, 95, 0.26) 0%, rgba(255, 255, 255, 0) 141.68%)",
@@ -23,14 +23,7 @@ const LineChart = () => {
     },
   };
 
-  return (
-    <Line
-  
-      className="linechart"
-      data={data}
-      options={options}
-    />
-  );
+  return <Line className="linechart" data={data} options={options} />;
 };
 
 export default LineChart;
