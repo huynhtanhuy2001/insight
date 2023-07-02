@@ -38,6 +38,7 @@ const PopupLocVe: React.FC<PopupProps> = ({
         ...prevValues,
         status: ["1"],
       }));
+
     } else {
       // Nếu không, cập nhật lại trạng thái của status theo các giá trị đã chọn
       setFilterValues(prevValues => ({
@@ -45,6 +46,7 @@ const PopupLocVe: React.FC<PopupProps> = ({
         status: updatedStatus,
       }));
     }
+
     console.log(updatedStatus)
   };
   const handleFilter = () => {

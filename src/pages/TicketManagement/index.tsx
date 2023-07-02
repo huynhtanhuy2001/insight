@@ -152,6 +152,7 @@ const TicketManagementPage = () => {
     setFilteredTickets(tickets);
   }, [dispatch, tickets]);
 
+  
   const closePopup = () => {
     // setPopupVisible(false);
     setLocVePopupVisible(false);
@@ -168,45 +169,43 @@ const TicketManagementPage = () => {
   const handleFilter = (values: FilterValues) => {
     const { fromDate, toDate, status, gate } = values;
 
-    let filteredData = [...tickets];
-
     if (fromDate) {
-      const formattedFromDate = moment(fromDate).format("YYYY-MM-DD");
+      const formattedFromDate = moment(fromDate).format("DD/MM/YYYY");
 
-      filteredData = filteredData.filter(
+      tickets.filter(
         (ticket: DataType) =>
-          moment(ticket.NgaySuDung).format("YYYY-MM-DD") >= formattedFromDate
+          moment(ticket.NgaySuDung).format("DD/MM/YYYY") >= formattedFromDate
       );
     }
 
     if (toDate) {
-      const formattedToDate = moment(toDate).format("YYYY-MM-DD");
+      const formattedToDate = moment(toDate).format("DD/MM/YYYY");
 
-      filteredData = filteredData.filter(
+      tickets.filter(
         (ticket: DataType) =>
-          moment(ticket.NgaySuDung).format("YYYY-MM-DD") <= formattedToDate
+          moment(ticket.NgaySuDung).format("DD/MM/YYYY") <= formattedToDate
       );
     }
 
     if (status) {
-      filteredData = filteredData.filter(
+      tickets.filter(
         (ticket: DataType) => ticket.TinhTrangSuDung === status
       );
     }
 
     if (gate && gate.includes("all")) {
-      filteredData = filteredData.filter(
+      tickets.filter(
         (ticket: DataType) => ticket.CongCheckIn !== ""
       );
     } else if (gate && gate.length > 0) {
-      filteredData = filteredData.filter((ticket: DataType) =>
-        gate.includes(ticket.CongCheckIn)
+      tickets.filter(
+        (ticket: DataType) =>
+          gate.includes(ticket.CongCheckIn) || ticket.CongCheckIn === ""
       );
     }
 
     // Cập nhật dữ liệu đã lọc vào state
-    setFilteredTickets(filteredData);
-    setTableData(filteredData);
+    setFilteredTickets(tickets);
     // Đóng popup
     closePopup();
   };
@@ -398,6 +397,7 @@ const TicketManagementPage = () => {
               dataSource={
                 filteredTickets.length > 0 ? filteredTickets : tickets
               }
+           
               pagination={paginationConfig}
             />
             <Modal
